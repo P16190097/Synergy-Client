@@ -1,8 +1,27 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import ApolloClient from 'apollo-boost';
+import { ApolloProvider } from '@apollo/react-hooks';
+import Routes from './routes';
 import * as serviceWorker from './serviceWorker';
+import { getAllUsers } from './gql/user';
+
+const client = new ApolloClient({
+    uri: 'http://localhost:8080/graphql',
+});
+
+// query used for testing, please remove
+client
+    .query({ query: getAllUsers })
+    .then(result => console.log(result));
+
+const App = () => {
+    return (
+        <ApolloProvider client={client}>
+            <Routes />
+        </ApolloProvider>
+    );
+};
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
