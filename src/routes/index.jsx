@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Home from './home';
+import Register from './register';
 //import logo from './logo.svg';
 
 const Router = () => {
@@ -8,6 +9,9 @@ const Router = () => {
     <BrowserRouter>
       <Switch>
         <Route path="/" exact component={Home} />
+      </Switch>
+      <Switch>
+        <Route path="/register" exact component={Register} />
       </Switch>
     </BrowserRouter>
   );
