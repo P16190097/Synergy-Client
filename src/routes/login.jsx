@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Container, Header } from 'semantic-ui-react';
 
-const Home = () => {
+const Login = () => {
     const history = useHistory();
     const navigateRegister = () => {
         history.push('/register');
@@ -10,10 +10,9 @@ const Home = () => {
 
     return (
         <Container text>
-            <p>!!!</p>
             <Header onClick={navigateRegister}>Click to go to registration</Header>
         </Container>
     );
 };
 
-export default Home;
+export default memo(Login);

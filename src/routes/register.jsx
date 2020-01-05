@@ -43,6 +43,10 @@ const Register = () => {
                 validate={values => {
                     const errors = {};
 
+                    if (values.password !== values.confirmPassword) {
+                        errors.confirmPassword = 'Passwords do not match!';
+                    }
+
                     if (!values.email) {
                         errors.email = 'Please enter email address';
                     }
@@ -56,6 +60,10 @@ const Register = () => {
 
                     if (!values.password) {
                         errors.password = 'Please enter Password';
+                    }
+
+                    if (!values.confirmPassword) {
+                        errors.confirmPassword = 'Please confirm password';
                     }
 
                     return errors;
@@ -77,6 +85,7 @@ const Register = () => {
 
                         <Field
                             name="email"
+                            type="email"
                             component={Input}
                             onBlur={() => setTouched({ email: true })}
                             onChange={(e) => setFieldValue('email', e.target.value)}
@@ -96,6 +105,18 @@ const Register = () => {
                             type="password"
                         />
                         <ErrorMessage name="password" component="span" />
+                        <br />
+
+                        <Field
+                            name="confirmPassword"
+                            component={Input}
+                            onBlur={() => setTouched({ confirmPassword: true })}
+                            onChange={(e) => setFieldValue('confirmPassword', e.target.value)}
+                            placeholder="Confirm Password"
+                            fluid
+                            type="password"
+                        />
+                        <ErrorMessage name="confirmPassword" component="span" />
                         <br />
 
                         <Button type="submit" disabled={isSubmitting}>Submit</Button>
