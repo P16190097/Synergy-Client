@@ -9,15 +9,13 @@ export const getAllUsers = gql`
     `;
 
 export const REGISTER_USER = gql`
-mutation(
-  $username: String!, 
-  $email: String!, 
-  $password: String!
-  ) {
-    registerUser(
-      username: $username, 
-      email: $email, 
-      password: $password
-    )
+mutation($username: String!, $email: String!, $password: String!) {
+    registerUser(username: $username, email: $email, password: $password) {
+      ok 
+      errors {
+        path
+        message
+      }
+    }
 }
  `;

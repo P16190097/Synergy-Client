@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Container, Header } from 'semantic-ui-react';
+import { Container, Button } from 'semantic-ui-react';
 
 const Login = () => {
     const history = useHistory();
@@ -10,7 +10,8 @@ const Login = () => {
 
     return (
         <Container text>
-            <Header onClick={navigateRegister}>Click to go to registration</Header>
+            {/* <Header onClick={navigateRegister}>Click to go to registration</Header> */}
+            <Button primary onClick={navigateRegister}>Sign Up</Button>
         </Container>
     );
 };
