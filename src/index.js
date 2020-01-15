@@ -4,16 +4,17 @@ import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
 import Routes from './routes';
 import * as serviceWorker from './serviceWorker';
-import { getAllUsers } from './gql/user';
+// import { getAllUsers } from './gql/user';
+import 'semantic-ui-css/semantic.min.css';
 
 const client = new ApolloClient({
     uri: 'http://localhost:8080/graphql',
 });
 
 // query used for testing, please remove
-client
-    .query({ query: getAllUsers })
-    .then(result => console.log(result));
+// client
+//     .query({ query: getAllUsers })
+//     .then(result => console.log(result));
 
 const App = () => {
     return (

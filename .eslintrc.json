@@ -34,7 +34,8 @@
         "linebreak-style": 0,
         "object-curly-spacing": 0,
         "operator-linebreak": 0,
-        "import/prefer-default-export": 0
+        "import/prefer-default-export": 0,
+        "no-trailing-spaces": 0
     },
     "globals": {
         "document": true,
