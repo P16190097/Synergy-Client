@@ -1,14 +1,12 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { useHistory } from 'react-router-dom';
-import { Container, Header, Input, Button } from 'semantic-ui-react';
+import { Container, Header, Input, Button, Message } from 'semantic-ui-react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { REGISTER_USER } from '../gql/user';
 
 const Register = () => {
-    // const [email, setEmail] = useState('');
-    // const [username, setUsername] = useState('');
-    // const [password, setPassword] = useState('');
+    const [errorMsg, setErrorMsg] = useState(null);
 
     const history = useHistory();
     const navigateHome = () => {
@@ -16,7 +14,10 @@ const Register = () => {
     };
 
     const [register, { loading: submitting }] = useMutation(REGISTER_USER, {
-        onError: (error) => console.log(error),
+        onError: (error) => {
+            setErrorMsg(error.message);
+            console.log(error.message);
+        },
         onCompleted: () => navigateHome(),
     });
 
@@ -24,6 +25,9 @@ const Register = () => {
     return (
         <Container text>
             <Header as="h2">Register</Header>
+            {errorMsg && (
+                <Message error>{errorMsg}</Message>
+            )}
             <Formik
                 initialValues={{
                     username: '',
