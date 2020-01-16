@@ -15,7 +15,7 @@ const Register = () => {
 
     const [register, { loading: submitting }] = useMutation(REGISTER_USER, {
         onError: (error) => {
-            setErrorMsg(error.message);
+            setErrorMsg(error.message.replace('GraphQL error: ', ''));
             console.log(error.message);
         },
         onCompleted: () => navigateHome(),
@@ -24,10 +24,7 @@ const Register = () => {
 
     return (
         <Container text>
-            <Header as="h2">Register</Header>
-            {errorMsg && (
-                <Message error>{errorMsg}</Message>
-            )}
+            <Header as="h2">Register Account</Header>
             <Formik
                 initialValues={{
                     username: '',
@@ -35,7 +32,7 @@ const Register = () => {
                     password: '',
                 }}
                 onSubmit={values => {
-                    // same shape as initial values
+                    setErrorMsg(null);
                     register({
                         variables: {
                             username: values.username,
@@ -53,8 +50,11 @@ const Register = () => {
 
                     if (!values.email) {
                         errors.email = 'Please enter email address';
+                    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
+                        errors.email = 'Invalid email address';
                     }
-                    // else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+
+                    // if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
                     //     errors.email = 'Invalid email address';
                     // }
 
@@ -73,7 +73,7 @@ const Register = () => {
                     return errors;
                 }}
             >
-                {({ setTouched, isSubmitting, setFieldValue }) => (
+                {({ setTouched, isSubmitting, setFieldValue, errors }) => (
                     //values
                     <Form>
                         <Field
@@ -83,6 +83,7 @@ const Register = () => {
                             onChange={(e) => setFieldValue('username', e.target.value)}
                             placeholder="Username"
                             fluid
+                            error={Boolean(errors.username)}
                         />
                         <ErrorMessage name="username" component="span" />
                         <br />
@@ -95,33 +96,40 @@ const Register = () => {
                             onChange={(e) => setFieldValue('email', e.target.value)}
                             placeholder="Email"
                             fluid
+                            error={Boolean(errors.email)}
                         />
                         <ErrorMessage name="email" component="span" />
                         <br />
 
                         <Field
                             name="password"
+                            type="password"
                             component={Input}
                             onBlur={() => setTouched({ password: true })}
                             onChange={(e) => setFieldValue('password', e.target.value)}
                             placeholder="Password"
                             fluid
-                            type="password"
+                            error={Boolean(errors.password)}
                         />
                         <ErrorMessage name="password" component="span" />
                         <br />
 
                         <Field
                             name="confirmPassword"
+                            type="password"
                             component={Input}
                             onBlur={() => setTouched({ confirmPassword: true })}
                             onChange={(e) => setFieldValue('confirmPassword', e.target.value)}
                             placeholder="Confirm Password"
                             fluid
-                            type="password"
+                            error={Boolean(errors.confirmPassword)}
                         />
                         <ErrorMessage name="confirmPassword" component="span" />
                         <br />
+
+                        {errorMsg && (
+                            <Message error>{errorMsg}</Message>
+                        )}
 
                         <Button type="submit" disabled={isSubmitting}>Submit</Button>
                     </Form>
