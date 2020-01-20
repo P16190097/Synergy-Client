@@ -1,7 +1,7 @@
 import React, { memo, useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { useHistory } from 'react-router-dom';
-import { Container, Header, Input, Button, Message } from 'semantic-ui-react';
+import { Container, Header, Input, Button, Message, Form as SemanticForm } from 'semantic-ui-react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { REGISTER_USER } from '../gql/user';
 
@@ -10,15 +10,16 @@ const Register = () => {
 
     const history = useHistory();
     const navigateLogin = () => {
-        history.push('/');
+        history.push('/login');
     };
 
     const [register, { loading: submitting }] = useMutation(REGISTER_USER, {
         onCompleted: (data) => {
-            if (data.registerUser.ok) {
+            const { success, errors } = data.registerUser;
+            if (success) {
                 navigateLogin();
             } else {
-                setErrorMsg(data.registerUser.errors.map(error => error.message));
+                setErrorMsg(errors.map(error => error.message));
             }
         },
     });
@@ -78,55 +79,67 @@ const Register = () => {
                 {({ setTouched, touched, isSubmitting, setFieldValue, errors }) => (
                     //values
                     <Form>
-                        <Field
-                            name="username"
-                            component={Input}
-                            onBlur={() => setTouched({ username: true })}
-                            onChange={(e) => setFieldValue('username', e.target.value)}
-                            placeholder="Username"
-                            fluid
-                            error={Boolean(errors.username && touched.username)}
-                        />
-                        <ErrorMessage name="username" component="span" />
+                        <SemanticForm.Field>
+                            <label htmlFor="username">Username</label>
+                            <Field
+                                name="username"
+                                component={Input}
+                                onBlur={() => setTouched({ username: true })}
+                                onChange={(e) => setFieldValue('username', e.target.value)}
+                                placeholder="Username"
+                                fluid
+                                error={Boolean(errors.username && touched.username)}
+                            />
+                            <ErrorMessage name="username" component="span" />
+                        </SemanticForm.Field>
                         <br />
 
-                        <Field
-                            name="email"
-                            type="email"
-                            component={Input}
-                            onBlur={() => setTouched({ email: true })}
-                            onChange={(e) => setFieldValue('email', e.target.value)}
-                            placeholder="Email"
-                            fluid
-                            error={Boolean(errors.email && touched.email)}
-                        />
-                        <ErrorMessage name="email" component="span" />
+                        <SemanticForm.Field>
+                            <label htmlFor="email">Email</label>
+                            <Field
+                                name="email"
+                                type="email"
+                                component={Input}
+                                onBlur={() => setTouched({ email: true })}
+                                onChange={(e) => setFieldValue('email', e.target.value)}
+                                placeholder="Email"
+                                fluid
+                                error={Boolean(errors.email && touched.email)}
+                            />
+                            <ErrorMessage name="email" component="span" />
+                        </SemanticForm.Field>
                         <br />
 
-                        <Field
-                            name="password"
-                            type="password"
-                            component={Input}
-                            onBlur={() => setTouched({ password: true })}
-                            onChange={(e) => setFieldValue('password', e.target.value)}
-                            placeholder="Password"
-                            fluid
-                            error={Boolean(errors.password && touched.password)}
-                        />
-                        <ErrorMessage name="password" component="span" />
+                        <SemanticForm.Field>
+                            <label htmlFor="password">Password</label>
+                            <Field
+                                name="password"
+                                type="password"
+                                component={Input}
+                                onBlur={() => setTouched({ password: true })}
+                                onChange={(e) => setFieldValue('password', e.target.value)}
+                                placeholder="Password"
+                                fluid
+                                error={Boolean(errors.password && touched.password)}
+                            />
+                            <ErrorMessage name="password" component="span" />
+                        </SemanticForm.Field>
                         <br />
 
-                        <Field
-                            name="confirmPassword"
-                            type="password"
-                            component={Input}
-                            onBlur={() => setTouched({ confirmPassword: true })}
-                            onChange={(e) => setFieldValue('confirmPassword', e.target.value)}
-                            placeholder="Confirm Password"
-                            fluid
-                            error={Boolean(errors.confirmPassword && touched.confirmPassword)}
-                        />
-                        <ErrorMessage name="confirmPassword" component="span" />
+                        <SemanticForm.Field>
+                            <label htmlFor="confirmPassword">Confirm Password</label>
+                            <Field
+                                name="confirmPassword"
+                                type="password"
+                                component={Input}
+                                onBlur={() => setTouched({ confirmPassword: true })}
+                                onChange={(e) => setFieldValue('confirmPassword', e.target.value)}
+                                placeholder="Confirm Password"
+                                fluid
+                                error={Boolean(errors.confirmPassword && touched.confirmPassword)}
+                            />
+                            <ErrorMessage name="confirmPassword" component="span" />
+                        </SemanticForm.Field>
                         <br />
 
                         {errorMsg && (

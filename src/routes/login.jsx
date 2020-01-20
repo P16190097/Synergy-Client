@@ -18,10 +18,13 @@ const Login = () => {
 
     const [authenticate, { loading: submitting }] = useMutation(AUTHENTICATE_USER, {
         onCompleted: (data) => {
-            if (data.login.ok) {
+            const { success, token, refreshToken, errors } = data.authenticateUser;
+            if (success) {
+                localStorage.setItem('token', token);
+                localStorage.setItem('refreshToken', refreshToken);
                 navigateHome();
             } else {
-                setErrorMsg(data.login.errors.map(error => error.message));
+                setErrorMsg(errors.map(error => error.message));
             }
         },
     });
@@ -91,8 +94,11 @@ const Login = () => {
                             <Message error list={errorMsg} />
                         )}
 
-                        <Button type="submit" disabled={isSubmitting}>Login</Button>
-                        <Button primary onClick={navigateRegister}>Sign Up</Button>
+                        <div>
+                            <Button type="submit" disabled={isSubmitting}>Login</Button>
+                            <Button primary onClick={navigateRegister}>Sign Up</Button>
+                        </div>
+
                         {submitting && (
                             // <LoadingSpinner
                             //     loading={submitting}

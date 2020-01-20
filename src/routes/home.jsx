@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo } from 'react';
 import { Container, Header } from 'semantic-ui-react';
 
 const home = () => {
@@ -7,6 +7,6 @@ const home = () => {
             <Header as="h2">Home</Header>
         </Container>
     );
-}
+};
 
 export default memo(home);

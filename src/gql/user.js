@@ -11,7 +11,7 @@ export const getAllUsers = gql`
 export const REGISTER_USER = gql`
 mutation($username: String!, $email: String!, $password: String!) {
     registerUser(username: $username, email: $email, password: $password) {
-      ok
+      success
       user {
         id
         username
@@ -27,8 +27,8 @@ mutation($username: String!, $email: String!, $password: String!) {
 
 export const AUTHENTICATE_USER = gql`
 mutation($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
-      ok
+    authenticateUser(email: $email, password: $password) {
+      success
       token
       refreshToken
       errors {
