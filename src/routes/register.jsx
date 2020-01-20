@@ -9,16 +9,18 @@ const Register = () => {
     const [errorMsg, setErrorMsg] = useState(null);
 
     const history = useHistory();
-    const navigateHome = () => {
+    const navigateLogin = () => {
         history.push('/');
     };
 
     const [register, { loading: submitting }] = useMutation(REGISTER_USER, {
-        onError: (error) => {
-            setErrorMsg(error.message.replace('GraphQL error: ', ''));
-            console.log(error.message);
+        onCompleted: (data) => {
+            if (data.registerUser.ok) {
+                navigateLogin();
+            } else {
+                setErrorMsg(data.registerUser.errors.map(error => error.message));
+            }
         },
-        onCompleted: () => navigateHome(),
     });
 
 
@@ -73,7 +75,7 @@ const Register = () => {
                     return errors;
                 }}
             >
-                {({ setTouched, isSubmitting, setFieldValue, errors }) => (
+                {({ setTouched, touched, isSubmitting, setFieldValue, errors }) => (
                     //values
                     <Form>
                         <Field
@@ -83,7 +85,7 @@ const Register = () => {
                             onChange={(e) => setFieldValue('username', e.target.value)}
                             placeholder="Username"
                             fluid
-                            error={Boolean(errors.username)}
+                            error={Boolean(errors.username && touched.username)}
                         />
                         <ErrorMessage name="username" component="span" />
                         <br />
@@ -96,7 +98,7 @@ const Register = () => {
                             onChange={(e) => setFieldValue('email', e.target.value)}
                             placeholder="Email"
                             fluid
-                            error={Boolean(errors.email)}
+                            error={Boolean(errors.email && touched.email)}
                         />
                         <ErrorMessage name="email" component="span" />
                         <br />
@@ -109,7 +111,7 @@ const Register = () => {
                             onChange={(e) => setFieldValue('password', e.target.value)}
                             placeholder="Password"
                             fluid
-                            error={Boolean(errors.password)}
+                            error={Boolean(errors.password && touched.password)}
                         />
                         <ErrorMessage name="password" component="span" />
                         <br />
@@ -122,16 +124,16 @@ const Register = () => {
                             onChange={(e) => setFieldValue('confirmPassword', e.target.value)}
                             placeholder="Confirm Password"
                             fluid
-                            error={Boolean(errors.confirmPassword)}
+                            error={Boolean(errors.confirmPassword && touched.confirmPassword)}
                         />
                         <ErrorMessage name="confirmPassword" component="span" />
                         <br />
 
                         {errorMsg && (
-                            <Message error>{errorMsg}</Message>
+                            <Message error header="An Error has occured:" list={errorMsg} />
                         )}
 
-                        <Button type="submit" disabled={isSubmitting}>Submit</Button>
+                        <Button type="submit" disabled={isSubmitting}>Create Account</Button>
                     </Form>
                 )}
             </Formik>
