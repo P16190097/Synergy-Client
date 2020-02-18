@@ -1,15 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-//import { Provider } from 'react-redux';
-//import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
-//import rootReducer from './reducers';
+import rootReducer from './reducers';
 import Routes from './routes';
 import * as serviceWorker from './serviceWorker';
 import 'semantic-ui-css/semantic.min.css';
 
-//const store = createStore(rootReducer);
+const store = createStore(rootReducer);
 
 const client = new ApolloClient({
     uri: 'http://localhost:8080/graphql',
@@ -22,11 +22,11 @@ const client = new ApolloClient({
 
 const App = () => {
     return (
-        // <Provider store={store}>
-        <ApolloProvider client={client}>
-            <Routes />
-        </ApolloProvider>
-        // </Provider>
+        <Provider store={store}>
+            <ApolloProvider client={client}>
+                <Routes />
+            </ApolloProvider>
+        </Provider>
     );
 };
 
