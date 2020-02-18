@@ -24,7 +24,7 @@ export const setAuthenticated = (auth) => ({
     auth,
 });
 
-export const setUserId = (user) => ({
+export const setUserId = (userId) => ({
     type: 'SET_USER_ID',
-    user,
+    userId,
 });

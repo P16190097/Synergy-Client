@@ -15,11 +15,6 @@ const client = new ApolloClient({
     uri: 'http://localhost:8080/graphql',
 });
 
-// query used for testing, please remove
-// client
-//     .query({ query: getAllUsers })
-//     .then(result => console.log(result));
-
 const App = () => {
     return (
         <Provider store={store}>

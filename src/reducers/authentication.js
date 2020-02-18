@@ -1,19 +1,15 @@
 const authentication = (state = { auth: false, userId: null }, action) => {
     switch (action.type) {
         case ('SET_AUTHENTICATION'):
-            return [
+            return {
                 ...state,
-                {
-                    authenticated: action.auth,
-                },
-            ];
+                authenticated: action.auth,
+            };
         case ('SET_USER_ID'):
-            return [
+            return {
                 ...state,
-                {
-                    userId: action.user,
-                },
-            ];
+                userId: action.userId,
+            };
         default: return state;
     }
 };
