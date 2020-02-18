@@ -3,6 +3,10 @@
         "airbnb",
         "plugin:react/recommended"
     ],
+    "parser": "babel-eslint",
+    "env": {
+        "browser": true
+    },
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true
@@ -35,7 +39,18 @@
         "object-curly-spacing": 0,
         "operator-linebreak": 0,
         "import/prefer-default-export": 0,
-        "no-trailing-spaces": 0
+        "no-trailing-spaces": 0,
+        "jsx-a11y/label-has-associated-control": [
+            "error",
+            {
+                "required": {
+                    "some": [
+                        "nesting",
+                        "id"
+                    ]
+                }
+            }
+        ]
     },
     "globals": {
         "document": true,

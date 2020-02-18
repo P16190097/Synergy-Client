@@ -1,29 +1,33 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { useHistory } from 'react-router-dom';
-import { Container, Header, Input, Button } from 'semantic-ui-react';
+import { Container, Header, Input, Button, Message, Form as SemanticForm } from 'semantic-ui-react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { REGISTER_USER } from '../gql/user';
 
 const Register = () => {
-    // const [email, setEmail] = useState('');
-    // const [username, setUsername] = useState('');
-    // const [password, setPassword] = useState('');
+    const [errorMsg, setErrorMsg] = useState(null);
 
     const history = useHistory();
-    const navigateHome = () => {
-        history.push('/');
+    const navigateLogin = () => {
+        history.push('/login');
     };
 
     const [register, { loading: submitting }] = useMutation(REGISTER_USER, {
-        onError: (error) => console.log(error),
-        onCompleted: () => navigateHome(),
+        onCompleted: (data) => {
+            const { success, errors } = data.registerUser;
+            if (success) {
+                navigateLogin();
+            } else {
+                setErrorMsg(errors.map(error => error.message));
+            }
+        },
     });
 
 
     return (
         <Container text>
-            <Header as="h2">Register</Header>
+            <Header as="h2">Register Account</Header>
             <Formik
                 initialValues={{
                     username: '',
@@ -31,7 +35,7 @@ const Register = () => {
                     password: '',
                 }}
                 onSubmit={values => {
-                    // same shape as initial values
+                    setErrorMsg(null);
                     register({
                         variables: {
                             username: values.username,
@@ -49,8 +53,11 @@ const Register = () => {
 
                     if (!values.email) {
                         errors.email = 'Please enter email address';
+                    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
+                        errors.email = 'Invalid email address';
                     }
-                    // else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+
+                    // if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
                     //     errors.email = 'Invalid email address';
                     // }
 
@@ -69,57 +76,77 @@ const Register = () => {
                     return errors;
                 }}
             >
-                {({ setTouched, isSubmitting, setFieldValue }) => (
+                {({ setTouched, touched, isSubmitting, setFieldValue, errors }) => (
                     //values
                     <Form>
-                        <Field
-                            name="username"
-                            component={Input}
-                            onBlur={() => setTouched({ username: true })}
-                            onChange={(e) => setFieldValue('username', e.target.value)}
-                            placeholder="Username"
-                            fluid
-                        />
-                        <ErrorMessage name="username" component="span" />
+                        <SemanticForm.Field>
+                            <label htmlFor="username">Username</label>
+                            <Field
+                                name="username"
+                                component={Input}
+                                onBlur={() => setTouched({ username: true })}
+                                onChange={(e) => setFieldValue('username', e.target.value)}
+                                placeholder="Username"
+                                fluid
+                                error={Boolean(errors.username && touched.username)}
+                            />
+                            <ErrorMessage name="username" component="span" />
+                        </SemanticForm.Field>
                         <br />
 
-                        <Field
-                            name="email"
-                            type="email"
-                            component={Input}
-                            onBlur={() => setTouched({ email: true })}
-                            onChange={(e) => setFieldValue('email', e.target.value)}
-                            placeholder="Email"
-                            fluid
-                        />
-                        <ErrorMessage name="email" component="span" />
+                        <SemanticForm.Field>
+                            <label htmlFor="email">Email</label>
+                            <Field
+                                name="email"
+                                type="email"
+                                component={Input}
+                                onBlur={() => setTouched({ email: true })}
+                                onChange={(e) => setFieldValue('email', e.target.value)}
+                                placeholder="Email"
+                                fluid
+                                error={Boolean(errors.email && touched.email)}
+                            />
+                            <ErrorMessage name="email" component="span" />
+                        </SemanticForm.Field>
                         <br />
 
-                        <Field
-                            name="password"
-                            component={Input}
-                            onBlur={() => setTouched({ password: true })}
-                            onChange={(e) => setFieldValue('password', e.target.value)}
-                            placeholder="Password"
-                            fluid
-                            type="password"
-                        />
-                        <ErrorMessage name="password" component="span" />
+                        <SemanticForm.Field>
+                            <label htmlFor="password">Password</label>
+                            <Field
+                                name="password"
+                                type="password"
+                                component={Input}
+                                onBlur={() => setTouched({ password: true })}
+                                onChange={(e) => setFieldValue('password', e.target.value)}
+                                placeholder="Password"
+                                fluid
+                                error={Boolean(errors.password && touched.password)}
+                            />
+                            <ErrorMessage name="password" component="span" />
+                        </SemanticForm.Field>
                         <br />
 
-                        <Field
-                            name="confirmPassword"
-                            component={Input}
-                            onBlur={() => setTouched({ confirmPassword: true })}
-                            onChange={(e) => setFieldValue('confirmPassword', e.target.value)}
-                            placeholder="Confirm Password"
-                            fluid
-                            type="password"
-                        />
-                        <ErrorMessage name="confirmPassword" component="span" />
+                        <SemanticForm.Field>
+                            <label htmlFor="confirmPassword">Confirm Password</label>
+                            <Field
+                                name="confirmPassword"
+                                type="password"
+                                component={Input}
+                                onBlur={() => setTouched({ confirmPassword: true })}
+                                onChange={(e) => setFieldValue('confirmPassword', e.target.value)}
+                                placeholder="Confirm Password"
+                                fluid
+                                error={Boolean(errors.confirmPassword && touched.confirmPassword)}
+                            />
+                            <ErrorMessage name="confirmPassword" component="span" />
+                        </SemanticForm.Field>
                         <br />
 
-                        <Button type="submit" disabled={isSubmitting}>Submit</Button>
+                        {errorMsg && (
+                            <Message error header="An Error has occured:" list={errorMsg} />
+                        )}
+
+                        <Button type="submit" disabled={isSubmitting}>Create Account</Button>
                     </Form>
                 )}
             </Formik>
