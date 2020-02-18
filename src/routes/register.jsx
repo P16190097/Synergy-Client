@@ -22,6 +22,9 @@ const Register = () => {
                 setErrorMsg(errors.map(error => error.message));
             }
         },
+        onError: () => {
+            // TODO ERROR HANDLING
+        },
     });
 
 

@@ -18,3 +18,13 @@
 //     SHOW_COMPLETED: 'SHOW_COMPLETED',
 //     SHOW_ACTIVE: 'SHOW_ACTIVE',
 // };
+
+export const setAuthenticated = (auth) => ({
+    type: 'SET_AUTHENTICATED',
+    auth,
+});
+
+export const setUserId = (user) => ({
+    type: 'SET_USER_ID',
+    user,
+});
