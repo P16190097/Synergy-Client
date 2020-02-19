@@ -1,8 +1,13 @@
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 
 export const CREATE_TEAM = gql`
-mutation($name: String!) {
-    registerUser(name: $name) {
-      success
-}
+    mutation($teamName: String!) {
+        createTeam(name: $teamName) {
+            success
+            errors {
+                path
+                message
+            }
+        }
+    }
  `;
