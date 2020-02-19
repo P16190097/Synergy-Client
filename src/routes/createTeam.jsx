@@ -14,18 +14,16 @@ const CreateTeam = () => {
     // };
 
     const [createTeam, { loading: submitting }] = useMutation(CREATE_TEAM, {
-        onCompleted: () => {
-            //const { success, errors } = data.createTeam;
-            //console.log(data);
-            console.log('completed');
-            // if (success) {
-            //     //navigateLogin();
-            //     console.log('success');
-            // } else {
-            //     console.log('fail');
-            //     console.log(errorMsg);
-            //     setErrorMsg(errors.map(error => error.message));
-            // }
+        onCompleted: (data) => {
+            const { success, errors } = data.createTeam;
+            if (success) {
+                //navigateLogin();
+                console.log('success');
+            } else {
+                console.log('fail');
+                console.log(errorMsg);
+                setErrorMsg(errors.map(error => error.message));
+            }
         },
         onError: (error) => {
             // TODO: ADD BETTER ERROR HANDLING
