@@ -22,8 +22,10 @@ const Register = () => {
                 setErrorMsg(errors.map(error => error.message));
             }
         },
-        onError: () => {
-            // TODO ERROR HANDLING
+        onError: (error) => {
+            // TODO: ADD BETTER ERROR HANDLING
+            console.log('GraphQl failed');
+            console.log(error);
         },
     });
 

@@ -14,19 +14,23 @@ const CreateTeam = () => {
     // };
 
     const [createTeam, { loading: submitting }] = useMutation(CREATE_TEAM, {
-        onCompleted: (data) => {
-            const { success, errors } = data.createTeam;
-            if (success) {
-                //navigateLogin();
-                console.log('success');
-            } else {
-                console.log('fail');
-                console.log(errorMsg);
-                setErrorMsg(errors.map(error => error.message));
-            }
+        onCompleted: () => {
+            //const { success, errors } = data.createTeam;
+            //console.log(data);
+            console.log('completed');
+            // if (success) {
+            //     //navigateLogin();
+            //     console.log('success');
+            // } else {
+            //     console.log('fail');
+            //     console.log(errorMsg);
+            //     setErrorMsg(errors.map(error => error.message));
+            // }
         },
-        onError: () => {
-            // TODO: ADD EXTRA ERROR HANDLING
+        onError: (error) => {
+            // TODO: ADD BETTER ERROR HANDLING
+            console.log('GraphQl failed');
+            console.log(error);
         },
     });
 
@@ -42,6 +46,7 @@ const CreateTeam = () => {
                 }}
                 onSubmit={values => {
                     setErrorMsg(null);
+                    console.log('sending');
                     createTeam({
                         variables: {
                             teamName: values.teamName,

@@ -27,6 +27,10 @@ const Login = () => {
                 setErrorMsg(errors.map(error => error.message));
             }
         },
+        onError: (error) => {
+            console.log('GraphQl failed');
+            console.log(error);
+        },
     });
 
     return (

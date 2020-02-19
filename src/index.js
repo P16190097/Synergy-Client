@@ -2,10 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-//import ApolloClient from 'apollo-boost';
-import { ApolloProvider } from '@apollo/react-hooks';
-
-
+import { ApolloProvider } from 'react-apollo';
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
@@ -19,7 +16,7 @@ import 'semantic-ui-css/semantic.min.css';
 
 const httpLink = new HttpLink({
     uri: 'http://localhost:8080/graphql',
-    //credentials: 'same-origin',
+    credentials: 'same-origin',
 });
 
 const authMiddlewareLink = new ApolloLink((operation, forward) => {
@@ -38,7 +35,7 @@ const authMiddlewareLink = new ApolloLink((operation, forward) => {
 });
 
 const authAfterwareLink = new ApolloLink((operation, forward) => {
-    forward(operation).map(response => {
+    return forward(operation).map(response => {
         const context = operation.getContext();
         const { response: { headers } } = context;
 
@@ -59,20 +56,24 @@ const authAfterwareLink = new ApolloLink((operation, forward) => {
     });
 });
 
+const gqlErrorAfterware = onError(({ graphQLErrors, networkError }) => {
+    if (graphQLErrors) {
+        graphQLErrors.forEach(({ message, locations, path }) => {
+            console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`);
+        });
+    }
+    if (networkError) console.log(`[Network error]: ${networkError}`);
+});
+
+const link = ApolloLink.from([
+    gqlErrorAfterware,
+    authAfterwareLink,
+    authMiddlewareLink,
+    httpLink,
+]);
+
 const client = new ApolloClient({
-    link: ApolloLink.from([
-        onError(({ graphQLErrors, networkError }) => {
-            if (graphQLErrors) {
-                graphQLErrors.forEach(({ message, locations, path }) => {
-                    console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`);
-                });
-            }
-            if (networkError) console.log(`[Network error]: ${networkError}`);
-        }),
-        httpLink,
-        authAfterwareLink,
-        authMiddlewareLink,
-    ]),
+    link,
     cache: new InMemoryCache(),
 });
 
