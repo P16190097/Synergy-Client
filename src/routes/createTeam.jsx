@@ -1,6 +1,6 @@
 import React, { memo, useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
-// import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Container, Header, Input, Button, Message, Form as SemanticForm } from 'semantic-ui-react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { CREATE_TEAM } from '../gql/team';
@@ -8,27 +8,28 @@ import { CREATE_TEAM } from '../gql/team';
 const CreateTeam = () => {
     const [errorMsg, setErrorMsg] = useState(null);
 
-    // const history = useHistory();
-    // const navigateLogin = () => {
-    //     history.push('/login');
-    // };
+    const history = useHistory();
+    const navigateLogin = () => {
+        history.push('/login');
+    };
 
     const [createTeam, { loading: submitting }] = useMutation(CREATE_TEAM, {
         onCompleted: (data) => {
             const { success, errors } = data.createTeam;
             if (success) {
-                //navigateLogin();
                 console.log('success');
             } else {
-                console.log('fail');
                 console.log(errorMsg);
                 setErrorMsg(errors.map(error => error.message));
             }
         },
         onError: (error) => {
-            // TODO: ADD BETTER ERROR HANDLING
+            // TODO: ADD BETTER ERROR HANDLING FOR NETWORK ERRORS
             console.log('GraphQl failed');
             console.log(error);
+            if (error.message === 'Not Authenticated') {
+                navigateLogin();
+            }
         },
     });
 
