@@ -22,20 +22,20 @@ const TeamListIcon = styled.li`
     }
 `;
 
-const TeamListItem = ({ id, name }) => (
+const TeamListItem = ({ id, letter }) => (
     <TeamListIcon key={`team-${id}`}>
-        {name}
+        {letter}
     </TeamListIcon>
 );
 
 TeamListItem.propTypes = {
     id: PropTypes.string,
-    name: PropTypes.string,
+    letter: PropTypes.string,
 };
 
 TeamListItem.defaultProps = {
     id: '',
-    name: '',
+    letter: '',
 };
 
 export default TeamListItem;
