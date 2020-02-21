@@ -11,28 +11,43 @@ const ChannelWrapper = styled.div`
     color: #9e9e9e;
 `;
 
-const NameWrapper = styled.div`
+const TeamNameHeader = styled.h1`
     color: #ff9900;
+    font-size: 20px;
 `;
+
+const SideBarList = styled.ul`
+    width: 100%;
+    list-style: none;
+    padding-left: 0px;
+`;
+
+const paddingLeft = 'padding-left: 10px;';
+
+const SideBarListHeader = styled.li`${paddingLeft};`;
+
+const PushLeft = styled.div`${paddingLeft};`;
 
 const Channels = ({ teamName, username, channels, users }) => {
     return (
         <ChannelWrapper>
-            <NameWrapper>
-                {teamName}
+            <PushLeft>
+                <TeamNameHeader>
+                    {teamName}
+                </TeamNameHeader>
                 {username}
-            </NameWrapper>
+            </PushLeft>
             <div>
-                <ul>
-                    <li>Channels</li>
+                <SideBarList>
+                    <SideBarListHeader>Channels</SideBarListHeader>
                     {channels.map(ChannelListItem)}
-                </ul>
+                </SideBarList>
             </div>
             <div>
-                <ul>
-                    <li>Users</li>
+                <SideBarList>
+                    <SideBarListHeader>Users</SideBarListHeader>
                     {users.map(UserListItem)}
-                </ul>
+                </SideBarList>
             </div>
         </ChannelWrapper>
     );

@@ -9,12 +9,18 @@ const TeamWrapper = styled.div`
     background-color: #333333;
 `;
 
+const TeamList = styled.ul`
+    width: 100%;
+    padding-left: 0px;
+    list-style: none;
+`;
+
 const Teams = ({ teams }) => {
     return (
         <TeamWrapper>
-            <ul>
+            <TeamList>
                 {teams.map(TeamListItem)}
-            </ul>
+            </TeamList>
         </TeamWrapper>
     );
 };

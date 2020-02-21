@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import SideBarListItem from './sideBarListItem';
+import Bubble from './Bubble';
 
 const UserListItem = ({ id, name }) => (
-    <li key={`user-${id}`}>
-        {name}
-    </li>
+    <SideBarListItem key={`user-${id}`}>
+        <Bubble /> {name}
+    </SideBarListItem>
 );
 
 UserListItem.propTypes = {

@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import SideBarListItem from './sideBarListItem';
 
 const ChannelListItem = ({ id, name }) => (
-    <li key={`channel-${id}`}>
+    <SideBarListItem key={`channel-${id}`}>
         # {name}
-    </li>
+    </SideBarListItem>
 );
 
 ChannelListItem.propTypes = {
