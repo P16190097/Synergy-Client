@@ -4,7 +4,7 @@ import Channels from '../components/channels';
 import Teams from '../components/teams';
 import Header from '../components/header';
 import Messages from '../components/messages';
-import Input from '../components/input';
+import SendMessage from '../components/sendMessage';
 
 const ViewTeam = () => {
     return (
@@ -22,16 +22,20 @@ const ViewTeam = () => {
             >
                 Channels
             </Channels>
-            <Header>Header</Header>
+            <Header
+                channelName="general"
+            >
+                Header
+            </Header>
             <Messages>
                 <ul className="message-list">
                     <li />
                     <li />
                 </ul>
             </Messages>
-            <Input>
-                <input type="text" placeholder="CSS Grid Layout Module" />
-            </Input>
+            <SendMessage
+                channelName="general"
+            />
         </AppLayout>
     );
 };
