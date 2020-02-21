@@ -4,6 +4,9 @@ export const CREATE_TEAM = gql`
     mutation($teamName: String!) {
         createTeam(name: $teamName) {
             success
+            team {
+                id
+            }
             errors {
                 path
                 message

@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { Icon } from 'semantic-ui-react';
 import ChannelListItem from './listItems/channelListItem';
 import UserListItem from './listItems/userListItem';
 
@@ -28,7 +29,7 @@ const SideBarListHeader = styled.li`${paddingLeft};`;
 
 const PushLeft = styled.div`${paddingLeft};`;
 
-const Channels = ({ teamName, username, channels, users }) => {
+const Channels = ({ teamName, username, channels, users, onAddChannelClick }) => {
     return (
         <ChannelWrapper>
             <PushLeft>
@@ -39,7 +40,7 @@ const Channels = ({ teamName, username, channels, users }) => {
             </PushLeft>
             <div>
                 <SideBarList>
-                    <SideBarListHeader>Channels</SideBarListHeader>
+                    <SideBarListHeader>Channels <Icon name="add circle" onClick={onAddChannelClick} /></SideBarListHeader>
                     {channels.map(ChannelListItem)}
                 </SideBarList>
             </div>
@@ -58,6 +59,7 @@ Channels.propTypes = {
     username: PropTypes.string,
     channels: PropTypes.arrayOf(PropTypes.object),
     users: PropTypes.arrayOf(PropTypes.object),
+    onAddChannelClick: PropTypes.func,
 };
 
 Channels.defaultProps = {
@@ -65,6 +67,7 @@ Channels.defaultProps = {
     username: '',
     channels: [],
     users: [],
+    onAddChannelClick: () => { },
 };
 
 export default Channels;

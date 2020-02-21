@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import decode from 'jwt-decode';
 import { useQuery } from '@apollo/react-hooks';
 import Channels from '../components/channels';
 import Teams from '../components/teams';
+import AddChannelModal from '../components/modals/addChannelModal';
 import { ALL_TEAMS } from '../gql/team';
 
 const SideBar = ({ currentTeamId }) => {
+    const [openChannelModal, setOpenChannelModal] = useState(false);
     const { loading, error, data } = useQuery(ALL_TEAMS);
 
     if (loading || error) {
@@ -15,9 +17,9 @@ const SideBar = ({ currentTeamId }) => {
 
     const teamList = data.allTeams;
 
-    const teamIndex = teamList.findIndex(x => x.id === currentTeamId);
+    const teamIndex = currentTeamId ? teamList.findIndex(x => x.id === parseInt(currentTeamId, 10)) : 0;
 
-    const team = teamList[teamIndex];
+    const team = teamIndex >= 0 ? teamList[teamIndex] : teamList[0];
 
     let username = '';
     try {
@@ -45,9 +47,16 @@ const SideBar = ({ currentTeamId }) => {
                 username={username}
                 channels={team.channels}
                 users={[{ id: 1, name: 'slack-bot' }, { id: 2, name: 'user1' }]}
+                onAddChannelClick={() => setOpenChannelModal(true)}
             >
                 Channels
             </Channels>
+            <AddChannelModal
+                open={openChannelModal}
+                onClose={() => setOpenChannelModal(false)}
+                key="sidebar-add-channel-modal"
+                currentTeamId={parseInt(currentTeamId, 10)}
+            />
         </>
     );
 };
@@ -57,7 +66,7 @@ SideBar.propTypes = {
 };
 
 SideBar.defaultProps = {
-    currentTeamId: null,
+    currentTeamId: 0,
 };
 
 export default SideBar;

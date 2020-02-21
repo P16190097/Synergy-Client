@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const TeamListIcon = styled.li`
     height: 50px;
@@ -23,9 +24,11 @@ const TeamListIcon = styled.li`
 `;
 
 const TeamListItem = ({ id, letter }) => (
-    <TeamListIcon key={`team-${id}`}>
-        {letter}
-    </TeamListIcon>
+    <Link to={`/teamview/${id}`}>
+        <TeamListIcon key={`team-${id}`}>
+            {letter}
+        </TeamListIcon>
+    </Link>
 );
 
 TeamListItem.propTypes = {

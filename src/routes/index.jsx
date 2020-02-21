@@ -15,7 +15,7 @@ const Router = () => {
         <PrivateRoute path="/createteam" exact component={CreateTeam} />
       </Switch>
       <Switch>
-        <Route path="/viewteam" exact component={ViewTeam} />
+        <Route path="/teamview/:teamId?/:channelId?" exact component={ViewTeam} />
       </Switch>
       <Switch>
         <Route path="/login" exact component={Login} />
