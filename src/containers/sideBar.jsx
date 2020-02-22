@@ -37,6 +37,7 @@ const SideBar = ({ currentTeamId }) => {
                 teams={teamList.map((t) => ({
                     id: t.id,
                     letter: t.name.charAt(0).toUpperCase(),
+                    active: t.id === team.id,
                 }))}
             >
                 Teams
