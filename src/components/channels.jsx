@@ -29,7 +29,7 @@ const SideBarListHeader = styled.li`${paddingLeft};`;
 
 const PushLeft = styled.div`${paddingLeft};`;
 
-const Channels = ({ teamName, username, channels, users, onAddChannelClick }) => {
+const Channels = ({ teamName, username, channels, users, onAddChannelClick, teamId }) => {
     return (
         <ChannelWrapper>
             <PushLeft>
@@ -41,7 +41,7 @@ const Channels = ({ teamName, username, channels, users, onAddChannelClick }) =>
             <div>
                 <SideBarList>
                     <SideBarListHeader>Channels <Icon name="add circle" onClick={onAddChannelClick} /></SideBarListHeader>
-                    {channels.map(ChannelListItem)}
+                    {channels.map((c) => ChannelListItem(c, teamId))}
                 </SideBarList>
             </div>
             <div>
@@ -60,6 +60,7 @@ Channels.propTypes = {
     channels: PropTypes.arrayOf(PropTypes.object),
     users: PropTypes.arrayOf(PropTypes.object),
     onAddChannelClick: PropTypes.func,
+    teamId: PropTypes.number,
 };
 
 Channels.defaultProps = {
@@ -68,6 +69,7 @@ Channels.defaultProps = {
     channels: [],
     users: [],
     onAddChannelClick: () => { },
+    teamId: null,
 };
 
 export default Channels;

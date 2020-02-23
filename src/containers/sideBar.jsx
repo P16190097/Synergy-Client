@@ -45,6 +45,7 @@ const SideBar = ({ currentTeamId }) => {
             <Channels
                 key="channel-sidebar"
                 teamName={team.name}
+                teamId={team.id}
                 username={username}
                 channels={team.channels}
                 users={[{ id: 1, name: 'slack-bot' }, { id: 2, name: 'user1' }]}
@@ -56,7 +57,7 @@ const SideBar = ({ currentTeamId }) => {
                 open={openChannelModal}
                 onClose={() => setOpenChannelModal(false)}
                 key="sidebar-add-channel-modal"
-                currentTeamId={parseInt(currentTeamId, 10)}
+                currentTeamId={team.id}
             />
         </>
     );

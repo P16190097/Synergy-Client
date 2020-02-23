@@ -9,7 +9,7 @@ import SideBar from '../containers/sideBar';
 const ViewTeam = ({ match: { params } }) => {
     return (
         <AppLayout>
-            <SideBar currentTeamId={params.teamId} />
+            <SideBar currentTeamId={parseInt(params.teamId, 10)} />
             <Header
                 channelName="general"
             >

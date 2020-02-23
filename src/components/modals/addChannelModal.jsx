@@ -4,11 +4,12 @@ import { useMutation } from '@apollo/react-hooks';
 import { Form as SemanticForm, Modal, Input, Button, Message } from 'semantic-ui-react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { CREATE_CHANNEL } from '../../gql/channels';
+import { ALL_TEAMS } from '../../gql/team';
 
 const AddChannelModal = ({ open, onClose, currentTeamId }) => {
     const [errorMsg, setErrorMsg] = useState(null);
 
-    const [createChannel, { loading: submitting }] = useMutation(CREATE_CHANNEL, {
+    const [createNewChannel, { loading: submitting }] = useMutation(CREATE_CHANNEL, {
         onCompleted: (data) => {
             const { success, errors } = data.createChannel;
             if (success) {
@@ -37,10 +38,24 @@ const AddChannelModal = ({ open, onClose, currentTeamId }) => {
                         }}
                         onSubmit={values => {
                             setErrorMsg(null);
-                            createChannel({
+                            createNewChannel({
                                 variables: {
                                     channelName: values.channelName,
                                     teamId: currentTeamId,
+                                },
+                                update: (proxy, { data: { createChannel } }) => {
+                                    const { channel, success } = createChannel;
+                                    if (success) {
+                                        // Read the data from our cache for this query.
+                                        const data = proxy.readQuery({ query: ALL_TEAMS });
+                                        // Write our data back to the cache with the new comment in it
+                                        const teamIndex = data.allTeams.findIndex(x => x.id === currentTeamId);
+                                        data.allTeams[teamIndex].channels.push(channel);
+                                        proxy.writeQuery({
+                                            query: ALL_TEAMS,
+                                            data,
+                                        });
+                                    }
                                 },
                             });
                         }}

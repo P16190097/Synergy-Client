@@ -1,11 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import SideBarListItem from './sideBarListItem';
 
-const ChannelListItem = ({ id, name }) => (
-    <SideBarListItem key={`channel-${id}`}>
-        # {name}
-    </SideBarListItem>
+const ChannelListItem = ({ id, name }, teamId) => (
+    <Link to={`/teamview/${teamId}/${id}`} key={`channel-${id}`}>
+        <SideBarListItem>
+            # {name}
+        </SideBarListItem>
+    </Link>
 );
 
 ChannelListItem.propTypes = {

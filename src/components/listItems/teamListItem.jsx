@@ -41,7 +41,7 @@ const ActiveTeamListIcon = styled.li`
 `;
 
 const TeamListItem = ({ id, letter, active }) => (
-    <Link to={`/teamview/${id}`}>
+    <Link key={`team-${id}`} to={`/teamview/${id}`}>
         {active ? (
             <ActiveTeamListIcon key={`team-${id}`}>
                 {letter}

@@ -6,6 +6,7 @@ export const CREATE_CHANNEL = gql`
             success
             channel {
                 id
+                name
             }
             errors {
                 path
