@@ -34,7 +34,8 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
 };
 
 PrivateRoute.propTypes = {
-    component: PropTypes.func,
+    // eslint-disable-next-line react/forbid-prop-types
+    component: PropTypes.object,
 };
 
 PrivateRoute.defaultProps = {
