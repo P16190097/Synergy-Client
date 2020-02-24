@@ -1,25 +1,14 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import decode from 'jwt-decode';
-import { useQuery } from '@apollo/react-hooks';
 import Channels from '../components/channels';
 import Teams from '../components/teams';
 import AddChannelModal from '../components/modals/addChannelModal';
-import { ALL_TEAMS } from '../gql/team';
+import AddPeopleModal from '../components/modals/addPeopleModal';
 
-const SideBar = ({ currentTeamId }) => {
+const SideBar = ({ allTeams, currentTeam }) => {
     const [openChannelModal, setOpenChannelModal] = useState(false);
-    const { loading, error, data } = useQuery(ALL_TEAMS);
-
-    if (loading || error) {
-        return null;
-    }
-
-    const teamList = data.allTeams;
-
-    const teamIndex = currentTeamId ? teamList.findIndex(x => x.id === parseInt(currentTeamId, 10)) : 0;
-
-    const team = teamIndex >= 0 ? teamList[teamIndex] : teamList[0];
+    const [openInviteUserModal, setInviteUserModal] = useState(false);
 
     let username = '';
     try {
@@ -34,22 +23,19 @@ const SideBar = ({ currentTeamId }) => {
         <>
             <Teams
                 key="team-sidebar"
-                teams={teamList.map((t) => ({
-                    id: t.id,
-                    letter: t.name.charAt(0).toUpperCase(),
-                    active: t.id === team.id,
-                }))}
+                teams={allTeams}
             >
                 Teams
             </Teams>
             <Channels
                 key="channel-sidebar"
-                teamName={team.name}
-                teamId={team.id}
+                teamName={currentTeam.name}
+                teamId={currentTeam.id}
                 username={username}
-                channels={team.channels}
+                channels={currentTeam.channels}
                 users={[{ id: 1, name: 'slack-bot' }, { id: 2, name: 'user1' }]}
                 onAddChannelClick={() => setOpenChannelModal(true)}
+                onInvitePeopleClick={() => setInviteUserModal(true)}
             >
                 Channels
             </Channels>
@@ -57,18 +43,28 @@ const SideBar = ({ currentTeamId }) => {
                 open={openChannelModal}
                 onClose={() => setOpenChannelModal(false)}
                 key="sidebar-add-channel-modal"
-                currentTeamId={team.id}
+                currentTeamId={currentTeam.id}
+            />
+            <AddPeopleModal
+                open={openInviteUserModal}
+                onClose={() => setInviteUserModal(false)}
+                key="sidebar-add-user-modal"
+                currentTeamId={currentTeam.id}
             />
         </>
     );
 };
 
 SideBar.propTypes = {
-    currentTeamId: PropTypes.number,
+    // eslint-disable-next-line react/forbid-prop-types
+    currentTeam: PropTypes.object,
+    allTeams: PropTypes.arrayOf(PropTypes.object),
+
 };
 
 SideBar.defaultProps = {
-    currentTeamId: 0,
+    currentTeam: {},
+    allTeams: [{}],
 };
 
 export default SideBar;

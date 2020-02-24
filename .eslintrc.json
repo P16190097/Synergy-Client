@@ -42,6 +42,8 @@
         "no-trailing-spaces": 0,
         "react/jsx-props-no-spreading": 0,
         "max-len": 0,
+        "jsx-a11y/anchor-is-valid": 0,
+        "no-script-url": 0,
         "jsx-a11y/label-has-associated-control": [
             "error",
             {

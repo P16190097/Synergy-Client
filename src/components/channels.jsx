@@ -29,7 +29,7 @@ const SideBarListHeader = styled.li`${paddingLeft};`;
 
 const PushLeft = styled.div`${paddingLeft};`;
 
-const Channels = ({ teamName, username, channels, users, onAddChannelClick, teamId }) => {
+const Channels = ({ teamName, username, channels, users, onAddChannelClick, teamId, onInvitePeopleClick }) => {
     return (
         <ChannelWrapper>
             <PushLeft>
@@ -50,6 +50,12 @@ const Channels = ({ teamName, username, channels, users, onAddChannelClick, team
                     {users.map(UserListItem)}
                 </SideBarList>
             </div>
+            <div>
+                <a href="javascript:void(0)" onClick={onInvitePeopleClick}>
+                    + Invite People
+                </a>
+            </div>
+
         </ChannelWrapper>
     );
 };
@@ -61,6 +67,7 @@ Channels.propTypes = {
     users: PropTypes.arrayOf(PropTypes.object),
     onAddChannelClick: PropTypes.func,
     teamId: PropTypes.number,
+    onInvitePeopleClick: PropTypes.func,
 };
 
 Channels.defaultProps = {
@@ -70,6 +77,7 @@ Channels.defaultProps = {
     users: [],
     onAddChannelClick: () => { },
     teamId: null,
+    onInvitePeopleClick: () => { },
 };
 
 export default Channels;
