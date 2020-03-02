@@ -51,7 +51,7 @@ const Channels = ({ teamName, username, channels, users, onAddChannelClick, team
                 </SideBarList>
             </div>
             <div>
-                <a href="javascript:void(0)" onClick={onInvitePeopleClick}>
+                <a href="#invite-users" onClick={onInvitePeopleClick}>
                     + Invite People
                 </a>
             </div>

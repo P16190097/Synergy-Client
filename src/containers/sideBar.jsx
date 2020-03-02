@@ -10,6 +10,20 @@ const SideBar = ({ allTeams, currentTeam }) => {
     const [openChannelModal, setOpenChannelModal] = useState(false);
     const [openInviteUserModal, setInviteUserModal] = useState(false);
 
+    const toggleChannelModal = (e) => {
+        if (e) {
+            e.preventDefault();
+        }
+        setOpenChannelModal(!openChannelModal);
+    };
+
+    const toggleUserModal = (e) => {
+        if (e) {
+            e.preventDefault();
+        }
+        setInviteUserModal(!openInviteUserModal);
+    };
+
     let username = '';
     try {
         const token = localStorage.getItem('token');
@@ -34,20 +48,20 @@ const SideBar = ({ allTeams, currentTeam }) => {
                 username={username}
                 channels={currentTeam.channels}
                 users={[{ id: 1, name: 'slack-bot' }, { id: 2, name: 'user1' }]}
-                onAddChannelClick={() => setOpenChannelModal(true)}
-                onInvitePeopleClick={() => setInviteUserModal(true)}
+                onAddChannelClick={(e) => toggleChannelModal(e)}
+                onInvitePeopleClick={(e) => toggleUserModal(e)}
             >
                 Channels
             </Channels>
             <AddChannelModal
                 open={openChannelModal}
-                onClose={() => setOpenChannelModal(false)}
+                onClose={(e) => toggleChannelModal(e)}
                 key="sidebar-add-channel-modal"
                 currentTeamId={currentTeam.id}
             />
             <AddPeopleModal
                 open={openInviteUserModal}
-                onClose={() => setInviteUserModal(false)}
+                onClose={(e) => toggleUserModal(e)}
                 key="sidebar-add-user-modal"
                 currentTeamId={currentTeam.id}
             />
