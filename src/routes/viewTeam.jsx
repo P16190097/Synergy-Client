@@ -13,17 +13,20 @@ const ViewTeam = ({ match: { params: { teamId, channelId } } }) => {
     const { loading, error, data } = useQuery(ALL_TEAMS);
 
     if (loading || error) {
-        return null;
+        return (<p>An error has occured</p>);
     }
 
-    if (!data.allTeams.length) {
+    const { allTeams, inviteTeams } = data;
+
+    const teams = [...allTeams, ...inviteTeams];
+
+    if (!teams.length) {
         return (<Redirect to="/createteam" />);
     }
-
     const teamIdInt = parseInt(teamId, 10);
 
     const currentTeamId = teamIdInt || 0;
-    const teamList = data.allTeams;
+    const teamList = teams;
     const teamIndex = currentTeamId ? teamList.findIndex(x => x.id === parseInt(currentTeamId, 10)) : 0;
     const team = teamIndex >= 0 ? teamList[teamIndex] : teamList[0];
 
