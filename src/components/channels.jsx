@@ -29,7 +29,7 @@ const SideBarListHeader = styled.li`${paddingLeft};`;
 
 const PushLeft = styled.div`${paddingLeft};`;
 
-const Channels = ({ teamName, username, channels, users, onAddChannelClick, teamId, onInvitePeopleClick }) => {
+const Channels = ({ teamName, username, channels, isOwner, users, onAddChannelClick, teamId, onInvitePeopleClick }) => {
     return (
         <ChannelWrapper>
             <PushLeft>
@@ -40,7 +40,7 @@ const Channels = ({ teamName, username, channels, users, onAddChannelClick, team
             </PushLeft>
             <div>
                 <SideBarList>
-                    <SideBarListHeader>Channels <Icon name="add circle" onClick={onAddChannelClick} /></SideBarListHeader>
+                    <SideBarListHeader>Channels {isOwner && <Icon name="add circle" onClick={onAddChannelClick} />}</SideBarListHeader>
                     {channels.map((c) => ChannelListItem(c, teamId))}
                 </SideBarList>
             </div>
@@ -50,11 +50,13 @@ const Channels = ({ teamName, username, channels, users, onAddChannelClick, team
                     {users.map(UserListItem)}
                 </SideBarList>
             </div>
-            <div>
-                <a href="#invite-users" onClick={onInvitePeopleClick}>
-                    + Invite People
-                </a>
-            </div>
+            {isOwner && (
+                <div>
+                    <a href="#invite-user" onClick={onInvitePeopleClick}>
+                        + Invite People
+                    </a>
+                </div>
+            )}
 
         </ChannelWrapper>
     );
@@ -68,6 +70,8 @@ Channels.propTypes = {
     onAddChannelClick: PropTypes.func,
     teamId: PropTypes.number,
     onInvitePeopleClick: PropTypes.func,
+    // eslint-disable-next-line react/forbid-prop-types
+    isOwner: PropTypes.bool,
 };
 
 Channels.defaultProps = {
@@ -78,6 +82,7 @@ Channels.defaultProps = {
     onAddChannelClick: () => { },
     teamId: null,
     onInvitePeopleClick: () => { },
+    isOwner: false,
 };
 
 export default Channels;

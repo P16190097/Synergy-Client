@@ -25,10 +25,12 @@ const SideBar = ({ allTeams, currentTeam }) => {
     };
 
     let username = '';
+    let isOwner = false;
     try {
         const token = localStorage.getItem('token');
         const { user } = decode(token);
         username = user.username;
+        isOwner = user.id === currentTeam.owner;
     } catch (err) {
         console.log(err);
     }
@@ -47,6 +49,7 @@ const SideBar = ({ allTeams, currentTeam }) => {
                 teamId={currentTeam.id}
                 username={username}
                 channels={currentTeam.channels}
+                isOwner={isOwner}
                 users={[{ id: 1, name: 'slack-bot' }, { id: 2, name: 'user1' }]}
                 onAddChannelClick={(e) => toggleChannelModal(e)}
                 onInvitePeopleClick={(e) => toggleUserModal(e)}
