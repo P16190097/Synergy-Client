@@ -5,9 +5,9 @@ import { Redirect } from 'react-router-dom';
 import { ALL_TEAMS } from '../gql/team';
 import AppLayout from '../components/appLayout';
 import Header from '../components/header';
-import Messages from '../components/messages';
 import SendMessage from '../components/sendMessage';
 import SideBar from '../containers/sideBar';
+import MesssageList from '../components/messageList';
 
 const ViewTeam = ({ match: { params: { teamId, channelId } } }) => {
     const { loading, error, data } = useQuery(ALL_TEAMS);
@@ -52,14 +52,10 @@ const ViewTeam = ({ match: { params: { teamId, channelId } } }) => {
                     >
                         Header
                     </Header>
-                    <Messages>
-                        <ul className="message-list">
-                            <li />
-                            <li />
-                        </ul>
-                    </Messages>
+                    <MesssageList />
                     <SendMessage
                         channelName={channel.name}
+                        channelId={channel.id}
                     />
                 </>
             ) : (

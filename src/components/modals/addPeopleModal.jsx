@@ -79,7 +79,7 @@ const AddChannelModal = ({ open, onClose, currentTeamId }) => {
                                         type="text"
                                         component={Input}
                                         onChange={(e) => setFieldValue('email', e.target.value)}
-                                        error={Boolean(errors.email) && touched.email}
+                                        error={errors.email && touched.email}
                                         fluid
                                         placeholder="User Email"
                                     />
