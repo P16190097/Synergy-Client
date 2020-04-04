@@ -52,7 +52,9 @@ const ViewTeam = ({ match: { params: { teamId, channelId } } }) => {
                     >
                         Header
                     </Header>
-                    <MesssageList />
+                    <MesssageList
+                        channelId={channel.id}
+                    />
                     <SendMessage
                         channelName={channel.name}
                         channelId={channel.id}
