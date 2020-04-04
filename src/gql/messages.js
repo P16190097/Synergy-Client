@@ -3,19 +3,12 @@ import gql from 'graphql-tag';
 export const GET_MESSAGES = gql`
     query($channelId: Int!) {
         getMessages(channelId: $channelId) {
-            success
-            messages {
-                id
-                text
-                user {
-                    username
-                }
-                createdAt
+            id
+            text
+            user {
+                username
             }
-            errors {
-                path
-                message
-            }
+            createdAt
         }
     }
  `;

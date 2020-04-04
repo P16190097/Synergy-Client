@@ -11,7 +11,10 @@ const MessageList = ({ channelId }) => {
         },
     });
 
-    if (loading || error) {
+    if (loading) {
+        return (<p>Loading...</p>);
+    }
+    if (error) {
         return (<p>An error has occured</p>);
     }
 
