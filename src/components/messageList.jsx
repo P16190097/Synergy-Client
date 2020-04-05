@@ -28,11 +28,11 @@ const MessageList = ({ channelId }) => {
                 {getMessages.map((message) => (
                     <Comment key={`message-${message.id}`}>
                         <Comment.Content>
-                            <Comment.Author as="a">{message.user.username}</Comment.Author>
-                            <Comment.Metadata>
+                            <Comment.Author className="message-name" as="a">{message.user.username}</Comment.Author>
+                            <Comment.Metadata className="message-time">
                                 <div>{moment.unix(message.createdAt / 1000).format('DD-MM-YYYY hh:mm:ss A')}</div>
                             </Comment.Metadata>
-                            <Comment.Text>{message.text}</Comment.Text>
+                            <Comment.Text className="message-text">{message.text}</Comment.Text>
                         </Comment.Content>
                     </Comment>
                 ))}
