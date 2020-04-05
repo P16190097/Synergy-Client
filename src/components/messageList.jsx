@@ -21,13 +21,14 @@ const MessageList = ({ channelId }) => {
                 if (!subscriptionData) {
                     return prev;
                 }
-                const newMessage = subscriptionData.newChannelMessage;
+                const newMessage = subscriptionData.data.newChannelMessage;
                 return {
-                    ...prev, messages: [...prev.messages, newMessage],
+                    getMessages: [...prev.getMessages, newMessage],
                 };
             },
+            //onError: err => console.error(err),
         });
-    });
+    }, []);
 
     if (loading) {
         return (<p>Loading...</p>);
