@@ -15,20 +15,13 @@ const wsLink = new WebSocketLink({
     uri: 'ws://localhost:8080/graphql',
     options: {
         reconnect: true,
+        lazy: true,
+        connectionParams: () => ({
+            token: localStorage.getItem('token'),
+            refreshToken: localStorage.getItem('refreshToken'),
+        }),
     },
 });
-
-const connectionLink = split(
-    ({ query }) => {
-        const definition = getMainDefinition(query);
-        return (
-            definition.kind === 'OperationDefinition' &&
-            definition.operation === 'subscription'
-        );
-    },
-    wsLink,
-    httpLink,
-);
 
 const authMiddlewareLink = new ApolloLink((operation, forward) => {
     // add the authorization to the headers
@@ -76,12 +69,24 @@ const gqlErrorAfterware = onError(({ graphQLErrors, networkError }) => {
     if (networkError) console.log(`[Network error]: ${networkError}`);
 });
 
-const link = ApolloLink.from([
+const httpLinkWithMiddleware = ApolloLink.from([
     gqlErrorAfterware,
     authAfterwareLink,
     authMiddlewareLink,
-    connectionLink,
+    httpLink,
 ]);
+
+const link = split(
+    ({ query }) => {
+        const definition = getMainDefinition(query);
+        return (
+            definition.kind === 'OperationDefinition' &&
+            definition.operation === 'subscription'
+        );
+    },
+    wsLink,
+    httpLinkWithMiddleware,
+);
 
 const client = new ApolloClient({
     link,

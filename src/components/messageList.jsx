@@ -1,16 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 import { Comment, Header, Icon } from 'semantic-ui-react';
 import moment from 'moment';
-import { GET_MESSAGES } from '../gql/messages';
+import { GET_MESSAGES, NEW_CHANNEL_MESSAGE_SUBSCRIPTION } from '../gql/messages';
 import Messages from './messages';
 
 const MessageList = ({ channelId }) => {
-    const { loading, error, data } = useQuery(GET_MESSAGES, {
+    const { subscribeToMore, loading, error, data } = useQuery(GET_MESSAGES, {
         variables: {
             channelId,
         },
+    });
+
+    useEffect(() => {
+        subscribeToMore({
+            document: NEW_CHANNEL_MESSAGE_SUBSCRIPTION,
+            variables: { channelId },
+            updateQuery: (prev, { subscriptionData }) => {
+                if (!subscriptionData) {
+                    return prev;
+                }
+                const newMessage = subscriptionData.newChannelMessage;
+                return {
+                    ...prev, messages: [...prev.messages, newMessage],
+                };
+            },
+        });
     });
 
     if (loading) {
