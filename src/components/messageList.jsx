@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
-import { Comment } from 'semantic-ui-react';
+import { Comment, Header, Icon } from 'semantic-ui-react';
 import moment from 'moment';
 import { GET_MESSAGES } from '../gql/messages';
 import Messages from './messages';
@@ -37,6 +37,10 @@ const MessageList = ({ channelId }) => {
                     </Comment>
                 ))}
             </Comment.Group>
+            <Header as="h2" icon textAlign="center">
+                <Icon name="users" circular className="orange" />
+                <Header.Content className="white">Start of chat history</Header.Content>
+            </Header>
         </Messages>
     );
 };
