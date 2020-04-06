@@ -28,7 +28,7 @@ const MessageList = ({ channelId }) => {
             },
             //onError: err => console.error(err),
         });
-    }, []);
+    }, [subscribeToMore, channelId]);
 
     if (loading) {
         return (<p>Loading...</p>);
