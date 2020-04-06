@@ -11,10 +11,13 @@ const MessageList = ({ channelId }) => {
         variables: {
             channelId,
         },
+        options: {
+            fetchPolicy: 'network-only',
+        },
     });
 
     useEffect(() => {
-        subscribeToMore({
+        const unSubscribe = subscribeToMore({
             document: NEW_CHANNEL_MESSAGE_SUBSCRIPTION,
             variables: { channelId },
             updateQuery: (prev, { subscriptionData }) => {
@@ -28,6 +31,7 @@ const MessageList = ({ channelId }) => {
             },
             //onError: err => console.error(err),
         });
+        return unSubscribe;
     }, [subscribeToMore, channelId]);
 
     if (loading) {
