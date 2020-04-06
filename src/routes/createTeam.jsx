@@ -13,11 +13,16 @@ const CreateTeam = () => {
         history.push('/login');
     };
 
+    const navigateToTeam = (id) => {
+        history.push(`/teamview/${id}`);
+    };
+
     const [createTeam, { loading: submitting }] = useMutation(CREATE_TEAM, {
         onCompleted: (data) => {
-            const { success, errors } = data.createTeam;
+            const { success, errors, team } = data.createTeam;
             if (success) {
                 console.log('success');
+                navigateToTeam(team.id);
             } else {
                 console.log(errorMsg);
                 setErrorMsg(errors.map(error => error.message));

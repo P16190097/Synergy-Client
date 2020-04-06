@@ -1,12 +1,13 @@
 import gql from 'graphql-tag';
 
-export const getAllUsers = gql`
-      {
-        allUsers {
-          id
-        }
-      }
-    `;
+export const ALL_USERS = gql`
+  query {
+    allUsers {
+      id
+      email
+    }
+  }
+`;
 
 export const REGISTER_USER = gql`
 mutation($username: String!, $email: String!, $password: String!) {
