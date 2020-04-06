@@ -13,7 +13,7 @@ const Login = () => {
         history.push('/register');
     };
     const navigateHome = () => {
-        history.push('/');
+        history.push('/teamview');
     };
 
     const [authenticate, { loading: submitting }] = useMutation(AUTHENTICATE_USER, {
@@ -65,9 +65,15 @@ const Login = () => {
                     return errors;
                 }}
             >
-                {({ setTouched, touched, isSubmitting, setFieldValue, errors }) => (
+                {({ setTouched, touched, isSubmitting, setFieldValue, errors, handleSubmit }) => (
                     //values
-                    <Form>
+                    <Form
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter' && !isSubmitting) {
+                                handleSubmit();
+                            }
+                        }}
+                    >
                         <Field
                             name="email"
                             type="email"

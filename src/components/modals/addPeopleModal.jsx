@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
-import { Form as SemanticForm, Modal, Input, Button, Message } from 'semantic-ui-react';
+import { Form as SemanticForm, Modal, Input, Button } from 'semantic-ui-react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { ADD_USER_TO_TEAM } from '../../gql/team';
 //import normalizeErrors from '../../normalizeErrors';
@@ -31,7 +31,7 @@ const AddChannelModal = ({ open, onClose, currentTeamId }) => {
         <Modal open={open} onClose={onClose}>
             <Modal.Header>Add User to your team</Modal.Header>
             <Modal.Content>
-                <SemanticForm>
+                <div className="ui form">
                     <Formik
                         initialValues={{
                             channelName: '',
@@ -79,7 +79,7 @@ const AddChannelModal = ({ open, onClose, currentTeamId }) => {
                                         type="text"
                                         component={Input}
                                         onChange={(e) => setFieldValue('email', e.target.value)}
-                                        error={Boolean(errors.email) && touched.email}
+                                        error={errors.email && touched.email}
                                         fluid
                                         placeholder="User Email"
                                     />
@@ -112,7 +112,7 @@ const AddChannelModal = ({ open, onClose, currentTeamId }) => {
                             </Form>
                         )}
                     </Formik>
-                </SemanticForm>
+                </div>
             </Modal.Content>
         </Modal>
     );

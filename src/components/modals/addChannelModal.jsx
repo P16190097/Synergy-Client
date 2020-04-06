@@ -31,7 +31,7 @@ const AddChannelModal = ({ open, onClose, currentTeamId }) => {
         <Modal open={open} onClose={onClose}>
             <Modal.Header>Add Channel</Modal.Header>
             <Modal.Content>
-                <SemanticForm>
+                <div className="ui form">
                     <Formik
                         initialValues={{
                             channelName: '',
@@ -111,7 +111,7 @@ const AddChannelModal = ({ open, onClose, currentTeamId }) => {
                             </Form>
                         )}
                     </Formik>
-                </SemanticForm>
+                </div>
             </Modal.Content>
         </Modal>
     );
