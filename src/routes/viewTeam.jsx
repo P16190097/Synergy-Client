@@ -10,15 +10,24 @@ import SideBar from '../containers/sideBar';
 import MesssageList from '../components/messageList';
 
 const ViewTeam = ({ match: { params: { teamId, channelId } } }) => {
-    const { loading, error, data } = useQuery(ALL_TEAMS);
+    const { loading, error, data } = useQuery(ALL_TEAMS, {
+        options: {
+            fetchPolicy: 'network-only',
+        },
+    });
 
-    if (loading || error) {
+    if (loading) {
+        return (<p>Loading...</p>);
+    }
+
+    if (error) {
+        console.log(error);
         return (<p>An error has occured</p>);
     }
 
-    const { allTeams, inviteTeams } = data;
+    const { teams } = data.getUser;
 
-    const teams = [...allTeams, ...inviteTeams];
+    //const teams = [...allTeams, ...inviteTeams];
 
     if (!teams.length) {
         return (<Redirect to="/createteam" />);
