@@ -11,9 +11,7 @@ const MessageList = ({ channelId }) => {
         variables: {
             channelId,
         },
-        options: {
-            fetchPolicy: 'network-only',
-        },
+        fetchPolicy: 'network-only',
     });
 
     useEffect(() => {

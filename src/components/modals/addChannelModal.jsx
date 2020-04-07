@@ -48,9 +48,9 @@ const AddChannelModal = ({ open, onClose, currentTeamId }) => {
                                     if (success) {
                                         // Read the data from our cache for this query.
                                         const data = proxy.readQuery({ query: ALL_TEAMS });
-                                        // Write our data back to the cache with the new comment in it
-                                        const teamIndex = data.allTeams.findIndex(x => x.id === currentTeamId);
-                                        data.allTeams[teamIndex].channels.push(channel);
+                                        // Write our data back to the cache with the new channel in it
+                                        const teamIndex = data.getUser.teams.findIndex(x => x.id === currentTeamId);
+                                        data.getUser.teams[teamIndex].channels.push(channel);
                                         proxy.writeQuery({
                                             query: ALL_TEAMS,
                                             data,

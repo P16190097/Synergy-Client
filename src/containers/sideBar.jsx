@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import decode from 'jwt-decode';
 import Channels from '../components/channels';
 import Teams from '../components/teams';
 import AddChannelModal from '../components/modals/addChannelModal';
 import AddPeopleModal from '../components/modals/addPeopleModal';
 
-const SideBar = ({ allTeams, currentTeam }) => {
+const SideBar = ({ allTeams, currentTeam, username }) => {
     const [openChannelModal, setOpenChannelModal] = useState(false);
     const [openInviteUserModal, setInviteUserModal] = useState(false);
 
@@ -24,17 +23,6 @@ const SideBar = ({ allTeams, currentTeam }) => {
         setInviteUserModal(!openInviteUserModal);
     };
 
-    let username = '';
-    let isOwner = false;
-    try {
-        const token = localStorage.getItem('token');
-        const { user } = decode(token);
-        username = user.username;
-        isOwner = user.id === currentTeam.owner;
-    } catch (err) {
-        console.log(err);
-    }
-
     return (
         <>
             <Teams
@@ -49,7 +37,7 @@ const SideBar = ({ allTeams, currentTeam }) => {
                 teamId={currentTeam.id}
                 username={username}
                 channels={currentTeam.channels}
-                isOwner={isOwner}
+                isOwner={currentTeam.admin}
                 users={[{ id: 1, name: 'slack-bot' }, { id: 2, name: 'user1' }]}
                 onAddChannelClick={(e) => toggleChannelModal(e)}
                 onInvitePeopleClick={(e) => toggleUserModal(e)}
@@ -76,12 +64,14 @@ SideBar.propTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     currentTeam: PropTypes.object,
     allTeams: PropTypes.arrayOf(PropTypes.object),
+    username: PropTypes.string,
 
 };
 
 SideBar.defaultProps = {
     currentTeam: {},
     allTeams: [{}],
+    username: '',
 };
 
 export default SideBar;

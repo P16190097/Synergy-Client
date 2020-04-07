@@ -11,9 +11,7 @@ import MesssageList from '../components/messageList';
 
 const ViewTeam = ({ match: { params: { teamId, channelId } } }) => {
     const { loading, error, data } = useQuery(ALL_TEAMS, {
-        options: {
-            fetchPolicy: 'network-only',
-        },
+        fetchPolicy: 'network-only',
     });
 
     if (loading) {
@@ -25,7 +23,7 @@ const ViewTeam = ({ match: { params: { teamId, channelId } } }) => {
         return (<p>An error has occured</p>);
     }
 
-    const { teams } = data.getUser;
+    const { teams, username } = data.getUser;
 
     //const teams = [...allTeams, ...inviteTeams];
 
@@ -46,7 +44,7 @@ const ViewTeam = ({ match: { params: { teamId, channelId } } }) => {
     return (
         <AppLayout>
             <SideBar
-                currentTeamId={currentTeamId}
+                username={username}
                 allTeams={teamList.map((t) => ({
                     id: t.id,
                     letter: t.name.charAt(0).toUpperCase(),

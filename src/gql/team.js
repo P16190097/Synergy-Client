@@ -23,6 +23,7 @@ export const ALL_TEAMS = gql`
             teams {
                 id
                 name
+                admin
                 channels {
                     id
                     name
