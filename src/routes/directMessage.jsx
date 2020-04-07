@@ -10,7 +10,7 @@ import SendMessage from '../components/sendMessage';
 import SideBar from '../containers/sideBar';
 import MesssageList from '../components/messageList';
 
-const ViewTeam = ({ match: { params: { teamId, channelId } } }) => {
+const ViewTeam = ({ match: { params: { teamId, userId } } }) => {
     const { loading, error, data } = useQuery(ALL_TEAMS, {
         fetchPolicy: 'network-only',
     });
@@ -22,9 +22,9 @@ const ViewTeam = ({ match: { params: { teamId, channelId } } }) => {
                 console.log(errors);
             }
         },
-        onError: (err) => {
+        onError: (error) => {
             console.log('GraphQl failed');
-            console.log(err);
+            console.log(error);
         },
     });
 
@@ -51,10 +51,6 @@ const ViewTeam = ({ match: { params: { teamId, channelId } } }) => {
     const teamIndex = currentTeamId ? teamList.findIndex(x => x.id === parseInt(currentTeamId, 10)) : 0;
     const team = teamIndex >= 0 ? teamList[teamIndex] : teamList[0];
 
-    const channelIdInt = parseInt(channelId, 10);
-    const currentChannelId = channelIdInt ? team.channels.findIndex(x => x.id === channelIdInt) : 0;
-    const channel = team.channels[currentChannelId];
-
     return (
         <AppLayout>
             <SideBar
@@ -66,26 +62,16 @@ const ViewTeam = ({ match: { params: { teamId, channelId } } }) => {
                 }))}
                 currentTeam={team}
             />
-            {channel ? (
-                <>
-                    <Header
-                        channelName={channel.name}
-                    >
-                        Header
-                    </Header>
-                    <MesssageList
-                        channelId={channel.id}
-                    />
-                    <SendMessage
-                        onSubmit={async (text) => {
-                            await createMessage({ variables: { message: text, channelId: parseInt(channel.id, 10) } });
-                        }}
-                        header={channel.name}
-                    />
-                </>
-            ) : (
-                    <h1>Please select a channel to view</h1>
-                )}
+            {/* <Header channelName={channel.name}>
+                Header
+            </Header>
+            <MesssageList channelId={channel.id} /> */}
+            <SendMessage
+                onSubmit={async (text) => {
+                    await createMessage({ variables: { message: text, userId: parseInt(user.id, 10) } });
+                }}
+                header={user.username}
+            />
         </AppLayout>
     );
 };

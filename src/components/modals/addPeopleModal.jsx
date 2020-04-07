@@ -71,8 +71,14 @@ const AddChannelModal = ({ open, onClose, currentTeamId }) => {
                             return errors;
                         }}
                     >
-                        {({ touched, isSubmitting, setFieldValue, errors }) => (
-                            <Form>
+                        {({ touched, isSubmitting, setFieldValue, errors, handleSubmit }) => (
+                            <Form
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' && !isSubmitting) {
+                                        handleSubmit();
+                                    }
+                                }}
+                            >
                                 <SemanticForm.Field>
                                     <Field
                                         name="email"

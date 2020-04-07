@@ -81,9 +81,15 @@ const Register = () => {
                     return errors;
                 }}
             >
-                {({ setTouched, touched, isSubmitting, setFieldValue, errors }) => (
+                {({ setTouched, touched, isSubmitting, setFieldValue, errors, handleSubmit }) => (
                     //values
-                    <Form>
+                    <Form
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter' && !isSubmitting) {
+                                handleSubmit();
+                            }
+                        }}
+                    >
                         <SemanticForm.Field>
                             <label htmlFor="username">Username</label>
                             <Field

@@ -29,6 +29,7 @@ const MessageList = ({ channelId }) => {
             },
             //onError: err => console.error(err),
         });
+        // returns unSubscribe cleanup function, runs on ComponentDidUnmount
         return unSubscribe;
     }, [subscribeToMore, channelId]);
 
