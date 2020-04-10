@@ -6,10 +6,9 @@ import Register from './register';
 import CreateTeam from './createTeam';
 import Home from './home';
 import ViewTeam from './viewTeam';
-//import DirectMessage from './directMessage';
+import DirectMessage from './directMessage';
 //import PrivateRoute from './privateRoute';
 //import logo from './logo.svg';
-
 
 const isAuthenticated = () => {
   const token = localStorage.getItem('token');
@@ -23,6 +22,7 @@ const isAuthenticated = () => {
   return true;
 };
 
+// eslint-disable-next-line react/prop-types
 const PrivateRoute = ({ component: Component, ...rest }) => {
   return (
     <Route
@@ -47,7 +47,7 @@ const Router = () => {
       <Switch>
         <PrivateRoute path="/createteam" exact component={CreateTeam} />
         <PrivateRoute path="/teamview/:teamId?/:channelId?" exact component={ViewTeam} />
-        {/* <PrivateRoute path="/directMessage/user/:teamId/:userId" exact component={DirectMessage} /> */}
+        <PrivateRoute path="/teamview/dm/:teamId/:userId" exact component={DirectMessage} />
         <Route path="/login" exact component={Login} />
         <Route path="/register" exact component={Register} />
         <Route path="/" exact component={Home} />

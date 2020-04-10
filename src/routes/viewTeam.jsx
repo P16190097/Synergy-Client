@@ -4,7 +4,7 @@ import { useQuery, useMutation } from '@apollo/react-hooks';
 import { Redirect } from 'react-router-dom';
 import { ALL_TEAMS } from '../gql/team';
 import { SEND_MESSAGE } from '../gql/messages';
-import AppLayout from '../components/appLayout';
+import AppLayout from '../components/styledComponents/appLayout';
 import Header from '../components/header';
 import SendMessage from '../components/sendMessage';
 import SideBar from '../containers/sideBar';

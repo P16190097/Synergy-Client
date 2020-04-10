@@ -3,28 +3,28 @@ import PropTypes from 'prop-types';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { Redirect } from 'react-router-dom';
 import { ALL_TEAMS } from '../gql/team';
-import { SEND_MESSAGE } from '../gql/messages';
-import AppLayout from '../components/appLayout';
+import { SEND_DIRECT_MESSAGE } from '../gql/messages';
+import AppLayout from '../components/styledComponents/appLayout';
 import Header from '../components/header';
 import SendMessage from '../components/sendMessage';
 import SideBar from '../containers/sideBar';
-import MesssageList from '../components/messageList';
+import DirectMessageList from '../components/directMessageList';
 
-const ViewTeam = ({ match: { params: { teamId, userId } } }) => {
+const DirectMessage = ({ match: { params: { teamId, userId } } }) => {
     const { loading, error, data } = useQuery(ALL_TEAMS, {
         fetchPolicy: 'network-only',
     });
 
-    const [createMessage] = useMutation(SEND_MESSAGE, {
+    const [createMessage] = useMutation(SEND_DIRECT_MESSAGE, {
         onCompleted: (resp) => {
-            const { success, errors } = resp.createMessage;
+            const { success, errors } = resp.createDirectMessage;
             if (!success) {
                 console.log(errors);
             }
         },
-        onError: (error) => {
+        onError: (err) => {
             console.log('GraphQl failed');
-            console.log(error);
+            console.log(err);
         },
     });
 
@@ -45,6 +45,7 @@ const ViewTeam = ({ match: { params: { teamId, userId } } }) => {
         return (<Redirect to="/createteam" />);
     }
     const teamIdInt = parseInt(teamId, 10);
+    const userIdInt = parseInt(userId, 10);
 
     const currentTeamId = teamIdInt || 0;
     const teamList = teams;
@@ -62,27 +63,25 @@ const ViewTeam = ({ match: { params: { teamId, userId } } }) => {
                 }))}
                 currentTeam={team}
             />
-            {/* <Header channelName={channel.name}>
-                Header
-            </Header>
-            <MesssageList channelId={channel.id} /> */}
+            <Header channelName="TEST DIRECT MESSAGES" />
+            <DirectMessageList teamId={teamIdInt} userId={userIdInt} />
             <SendMessage
                 onSubmit={async (text) => {
-                    await createMessage({ variables: { message: text, userId: parseInt(user.id, 10) } });
+                    await createMessage({ variables: { teamId: team.id, receiverId: userIdInt, message: text } });
                 }}
-                header={user.username}
+                header="TEST DIRECT MESSAGES"
             />
         </AppLayout>
     );
 };
 
-ViewTeam.propTypes = {
+DirectMessage.propTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     match: PropTypes.object,
 };
 
-ViewTeam.defaultProps = {
+DirectMessage.defaultProps = {
     match: {},
 };
 
-export default ViewTeam;
+export default DirectMessage;
