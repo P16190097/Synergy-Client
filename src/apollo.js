@@ -41,11 +41,11 @@ const authMiddlewareLink = new ApolloLink((operation, forward) => {
 const authAfterwareLink = new ApolloLink((operation, forward) => {
     return forward(operation).map(response => {
         const context = operation.getContext();
-        const { response: { headers } } = context;
+        const { headers } = context;
 
         if (headers) {
-            const token = headers.get('x-token');
-            const refreshToken = headers.get('x-refresh-token');
+            const token = headers['x-token'];
+            const refreshToken = headers['x-refresh-token'];
 
             if (token) {
                 localStorage.setItem('token', token);

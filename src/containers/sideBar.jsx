@@ -1,14 +1,22 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import decode from 'jwt-decode';
 import Channels from '../components/channels';
 import Teams from '../components/teams';
 import AddChannelModal from '../components/modals/addChannelModal';
 import AddPeopleModal from '../components/modals/addPeopleModal';
+import DirectMessageModal from '../components/modals/directMessageModal';
 
-const SideBar = ({ allTeams, currentTeam }) => {
+const SideBar = ({ allTeams, currentTeam, username, userId }) => {
+    const [openDirectMessageModal, setDirectMessageModal] = useState(false);
     const [openChannelModal, setOpenChannelModal] = useState(false);
     const [openInviteUserModal, setInviteUserModal] = useState(false);
+
+    const toggleDirectMessageModal = (e) => {
+        if (e) {
+            e.preventDefault();
+        }
+        setDirectMessageModal(!openDirectMessageModal);
+    };
 
     const toggleChannelModal = (e) => {
         if (e) {
@@ -24,38 +32,32 @@ const SideBar = ({ allTeams, currentTeam }) => {
         setInviteUserModal(!openInviteUserModal);
     };
 
-    let username = '';
-    let isOwner = false;
-    try {
-        const token = localStorage.getItem('token');
-        const { user } = decode(token);
-        username = user.username;
-        isOwner = user.id === currentTeam.owner;
-    } catch (err) {
-        console.log(err);
-    }
-
     return (
         <>
             <Teams
                 key="team-sidebar"
                 teams={allTeams}
-            >
-                Teams
-            </Teams>
+            />
             <Channels
                 key="channel-sidebar"
                 teamName={currentTeam.name}
                 teamId={currentTeam.id}
                 username={username}
+                userId={userId}
                 channels={currentTeam.channels}
-                isOwner={isOwner}
-                users={[{ id: 1, name: 'slack-bot' }, { id: 2, name: 'user1' }]}
+                isOwner={currentTeam.admin}
+                users={currentTeam.directMessageMembers}
                 onAddChannelClick={(e) => toggleChannelModal(e)}
                 onInvitePeopleClick={(e) => toggleUserModal(e)}
-            >
-                Channels
-            </Channels>
+                onDirectMessageClick={(e) => toggleDirectMessageModal(e)}
+            />
+            <DirectMessageModal
+                userId={userId}
+                open={openDirectMessageModal}
+                onClose={(e) => toggleDirectMessageModal(e)}
+                key="sidebar-direct-message-modal"
+                currentTeamId={currentTeam.id}
+            />
             <AddChannelModal
                 open={openChannelModal}
                 onClose={(e) => toggleChannelModal(e)}
@@ -76,12 +78,15 @@ SideBar.propTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     currentTeam: PropTypes.object,
     allTeams: PropTypes.arrayOf(PropTypes.object),
-
+    username: PropTypes.string,
+    userId: PropTypes.number,
 };
 
 SideBar.defaultProps = {
     currentTeam: {},
     allTeams: [{}],
+    username: '',
+    userId: null,
 };
 
 export default SideBar;

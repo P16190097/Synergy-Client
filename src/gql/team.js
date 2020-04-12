@@ -17,22 +17,21 @@ export const CREATE_TEAM = gql`
 
 export const ALL_TEAMS = gql`
     query {
-        allTeams {
+        getUser {
             id
-            owner
-            name
-            channels {
+            username
+            teams {
                 id
                 name
-            }
-        }
-        inviteTeams {
-            id
-            owner
-            name
-            channels {
-                id
-                name
+                admin
+                directMessageMembers {
+                    id
+                    username
+                }
+                channels {
+                    id
+                    name
+                }
             }
         }
     }

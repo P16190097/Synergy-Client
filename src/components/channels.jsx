@@ -29,7 +29,7 @@ const SideBarListHeader = styled.li`${paddingLeft};`;
 
 const PushLeft = styled.div`${paddingLeft};`;
 
-const Channels = ({ teamName, username, channels, isOwner, users, onAddChannelClick, teamId, onInvitePeopleClick }) => {
+const Channels = ({ teamName, username, userId, channels, isOwner, users, onAddChannelClick, teamId, onInvitePeopleClick, onDirectMessageClick }) => {
     return (
         <ChannelWrapper>
             <PushLeft>
@@ -46,15 +46,17 @@ const Channels = ({ teamName, username, channels, isOwner, users, onAddChannelCl
             </div>
             <div>
                 <SideBarList>
-                    <SideBarListHeader>Users</SideBarListHeader>
-                    {users.map(UserListItem)}
+                    <SideBarListHeader>Users <Icon name="add circle" onClick={onDirectMessageClick} /></SideBarListHeader>
+                    {users.filter((user) => user.id !== userId).map((user) => UserListItem(user, teamId))}
                 </SideBarList>
             </div>
             {isOwner && (
                 <div>
-                    <a href="#invite-user" onClick={onInvitePeopleClick}>
-                        + Invite People
-                    </a>
+                    <SideBarList>
+                        <a href="#invite-user" onClick={onInvitePeopleClick}>
+                            + Invite People
+                        </a>
+                    </SideBarList>
                 </div>
             )}
 
@@ -70,8 +72,10 @@ Channels.propTypes = {
     onAddChannelClick: PropTypes.func,
     teamId: PropTypes.number,
     onInvitePeopleClick: PropTypes.func,
+    onDirectMessageClick: PropTypes.func,
     // eslint-disable-next-line react/forbid-prop-types
     isOwner: PropTypes.bool,
+    userId: PropTypes.number,
 };
 
 Channels.defaultProps = {
@@ -83,6 +87,8 @@ Channels.defaultProps = {
     teamId: null,
     onInvitePeopleClick: () => { },
     isOwner: false,
+    onDirectMessageClick: () => { },
+    userId: null,
 };
 
 export default Channels;

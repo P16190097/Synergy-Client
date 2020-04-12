@@ -1,10 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { useMutation } from '@apollo/react-hooks';
 import { Input } from 'semantic-ui-react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { SEND_MESSAGE } from '../gql/messages';
 
 const SendMessageWrapper = styled.div`
     grid-column: 3;
@@ -12,20 +10,7 @@ const SendMessageWrapper = styled.div`
     margin: 20px;
 `;
 
-const SendMessage = ({ channelName, channelId }) => {
-    const [createMessage] = useMutation(SEND_MESSAGE, {
-        onCompleted: (data) => {
-            const { success, errors } = data.createMessage;
-            if (!success) {
-                console.log(errors);
-            }
-        },
-        onError: (error) => {
-            console.log('GraphQl failed');
-            console.log(error);
-        },
-    });
-
+const SendMessage = ({ header, onSubmit }) => {
     return (
         <SendMessageWrapper>
             <Formik
@@ -40,7 +25,7 @@ const SendMessage = ({ channelName, channelId }) => {
                         return;
                     }
 
-                    await createMessage({ variables: { message: values.message.slice(0, 255), channelId: parseInt(channelId, 10) } })
+                    await onSubmit(values.message.slice(0, 255))
                         .then(() => {
                             setSubmitting(false);
                             resetForm();
@@ -63,7 +48,7 @@ const SendMessage = ({ channelName, channelId }) => {
                             value={values.message}
                             error={errors.email && touched.email}
                             fluid
-                            placeholder={`# ${channelName}`}
+                            placeholder={`# ${header}`}
                             action={{
                                 type: 'submit',
                                 content: 'Send',
@@ -79,13 +64,13 @@ const SendMessage = ({ channelName, channelId }) => {
 };
 
 SendMessage.propTypes = {
-    channelName: PropTypes.string,
-    channelId: PropTypes.number,
+    header: PropTypes.string,
+    onSubmit: PropTypes.func,
 };
 
 SendMessage.defaultProps = {
-    channelName: '',
-    channelId: null,
+    header: '',
+    onSubmit: () => { },
 };
 
 export default SendMessage;
