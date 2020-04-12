@@ -51,6 +51,19 @@ export const GET_DIRECT_MESSAGES = gql`
     }
 `;
 
+export const NEW_DIRECT_MESSAGE_SUBSCRIPTION = gql`
+    subscription($teamId: Int!, $userId: Int!) {
+        newDirectMessage(teamId: $teamId, receiverId: $userId) {
+            id
+            text
+            createdAt
+            sender {
+                username
+            }
+        }
+    }
+`;
+
 export const SEND_DIRECT_MESSAGE = gql`
     mutation($teamId: Int!, $receiverId: Int!, $message: String!) {
         createDirectMessage(teamId: $teamId, receiverId: $receiverId, text: $message) {

@@ -29,7 +29,7 @@ const SideBarListHeader = styled.li`${paddingLeft};`;
 
 const PushLeft = styled.div`${paddingLeft};`;
 
-const Channels = ({ teamName, username, channels, isOwner, users, onAddChannelClick, teamId, onInvitePeopleClick, onDirectMessageClick }) => {
+const Channels = ({ teamName, username, userId, channels, isOwner, users, onAddChannelClick, teamId, onInvitePeopleClick, onDirectMessageClick }) => {
     return (
         <ChannelWrapper>
             <PushLeft>
@@ -46,11 +46,8 @@ const Channels = ({ teamName, username, channels, isOwner, users, onAddChannelCl
             </div>
             <div>
                 <SideBarList>
-                    <SideBarListHeader>Users</SideBarListHeader>
-                    {users.map(UserListItem)}
-                    <a href="#message-user" onClick={onDirectMessageClick}>
-                        + Message Users
-                    </a>
+                    <SideBarListHeader>Users <Icon name="add circle" onClick={onDirectMessageClick} /></SideBarListHeader>
+                    {users.filter((user) => user.id !== userId).map((user) => UserListItem(user, teamId))}
                 </SideBarList>
             </div>
             {isOwner && (
@@ -78,6 +75,7 @@ Channels.propTypes = {
     onDirectMessageClick: PropTypes.func,
     // eslint-disable-next-line react/forbid-prop-types
     isOwner: PropTypes.bool,
+    userId: PropTypes.number,
 };
 
 Channels.defaultProps = {
@@ -90,6 +88,7 @@ Channels.defaultProps = {
     onInvitePeopleClick: () => { },
     isOwner: false,
     onDirectMessageClick: () => { },
+    userId: null,
 };
 
 export default Channels;

@@ -6,7 +6,7 @@ import AddChannelModal from '../components/modals/addChannelModal';
 import AddPeopleModal from '../components/modals/addPeopleModal';
 import DirectMessageModal from '../components/modals/directMessageModal';
 
-const SideBar = ({ allTeams, currentTeam, username }) => {
+const SideBar = ({ allTeams, currentTeam, username, userId }) => {
     const [openDirectMessageModal, setDirectMessageModal] = useState(false);
     const [openChannelModal, setOpenChannelModal] = useState(false);
     const [openInviteUserModal, setInviteUserModal] = useState(false);
@@ -43,14 +43,16 @@ const SideBar = ({ allTeams, currentTeam, username }) => {
                 teamName={currentTeam.name}
                 teamId={currentTeam.id}
                 username={username}
+                userId={userId}
                 channels={currentTeam.channels}
                 isOwner={currentTeam.admin}
-                users={[{ id: 1, name: 'slack-bot' }, { id: 2, name: 'user1' }]}
+                users={currentTeam.directMessageMembers}
                 onAddChannelClick={(e) => toggleChannelModal(e)}
                 onInvitePeopleClick={(e) => toggleUserModal(e)}
                 onDirectMessageClick={(e) => toggleDirectMessageModal(e)}
             />
             <DirectMessageModal
+                userId={userId}
                 open={openDirectMessageModal}
                 onClose={(e) => toggleDirectMessageModal(e)}
                 key="sidebar-direct-message-modal"
@@ -77,13 +79,14 @@ SideBar.propTypes = {
     currentTeam: PropTypes.object,
     allTeams: PropTypes.arrayOf(PropTypes.object),
     username: PropTypes.string,
-
+    userId: PropTypes.number,
 };
 
 SideBar.defaultProps = {
     currentTeam: {},
     allTeams: [{}],
     username: '',
+    userId: null,
 };
 
 export default SideBar;

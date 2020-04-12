@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
-import { Comment as Message, Header, Icon } from 'semantic-ui-react';
+import { Comment as Message, Header, Icon, Loader } from 'semantic-ui-react';
 import moment from 'moment';
-import { GET_DIRECT_MESSAGES, NEW_CHANNEL_MESSAGE_SUBSCRIPTION } from '../gql/messages';
+import { GET_DIRECT_MESSAGES, NEW_DIRECT_MESSAGE_SUBSCRIPTION } from '../gql/messages';
 import Messages from './styledComponents/messages';
 
 const DirectMessageList = ({ teamId, userId }) => {
@@ -15,34 +15,37 @@ const DirectMessageList = ({ teamId, userId }) => {
         fetchPolicy: 'network-only',
     });
 
-    // useEffect(() => {
-    //     const unSubscribe = subscribeToMore({
-    //         document: NEW_CHANNEL_MESSAGE_SUBSCRIPTION,
-    //         variables: { channelId },
-    //         updateQuery: (prev, { subscriptionData }) => {
-    //             if (!subscriptionData) {
-    //                 return prev;
-    //             }
-    //             const newMessage = subscriptionData.data.newChannelMessage;
-    //             return {
-    //                 getMessages: [...prev.getMessages, newMessage],
-    //             };
-    //         },
-    //         //onError: err => console.error(err),
-    //     });
-    //     // returns unSubscribe cleanup function, runs on ComponentDidUnmount
-    //     return unSubscribe;
-    // }, [subscribeToMore, channelId]);
+    useEffect(() => {
+        const unSubscribe = subscribeToMore({
+            document: NEW_DIRECT_MESSAGE_SUBSCRIPTION,
+            variables: { teamId, userId },
+            updateQuery: (prev, { subscriptionData }) => {
+                if (!subscriptionData) {
+                    return prev;
+                }
+
+                const newMessage = subscriptionData.data.newDirectMessage;
+
+                return {
+                    getDirectMessages: [...prev.getDirectMessages, newMessage],
+                };
+            },
+            //onError: err => console.error(err),
+        });
+        // returns unSubscribe cleanup function, runs on ComponentDidUnmount
+        return unSubscribe;
+    }, [subscribeToMore, teamId, userId]);
 
     if (loading) {
-        return (<p>Loading...</p>);
+        return (
+            <Loader />
+        );
     }
     if (error) {
         return (<p>An error has occured</p>);
     }
 
     const { getDirectMessages: messages } = data;
-    console.log(messages);
 
     return (
         <Messages>

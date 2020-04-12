@@ -24,6 +24,10 @@ export const ALL_TEAMS = gql`
                 id
                 name
                 admin
+                directMessageMembers {
+                    id
+                    username
+                }
                 channels {
                     id
                     name

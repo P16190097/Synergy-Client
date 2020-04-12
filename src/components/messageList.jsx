@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
-import { Comment as Message, Header, Icon } from 'semantic-ui-react';
+import { Comment as Message, Header, Icon, Loader } from 'semantic-ui-react';
 import moment from 'moment';
 import { GET_MESSAGES, NEW_CHANNEL_MESSAGE_SUBSCRIPTION } from '../gql/messages';
 import Messages from './styledComponents/messages';
@@ -22,7 +22,9 @@ const MessageList = ({ channelId }) => {
                 if (!subscriptionData) {
                     return prev;
                 }
+
                 const newMessage = subscriptionData.data.newChannelMessage;
+
                 return {
                     getMessages: [...prev.getMessages, newMessage],
                 };
@@ -34,7 +36,9 @@ const MessageList = ({ channelId }) => {
     }, [subscribeToMore, channelId]);
 
     if (loading) {
-        return (<p>Loading...</p>);
+        return (
+            <Loader />
+        );
     }
     if (error) {
         return (<p>An error has occured</p>);

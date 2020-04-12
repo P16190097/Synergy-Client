@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { Redirect } from 'react-router-dom';
+import { Dimmer, Loader } from 'semantic-ui-react';
 import { ALL_TEAMS } from '../gql/team';
 import { SEND_DIRECT_MESSAGE } from '../gql/messages';
 import AppLayout from '../components/styledComponents/appLayout';
@@ -29,7 +30,11 @@ const DirectMessage = ({ match: { params: { teamId, userId } } }) => {
     });
 
     if (loading) {
-        return (<p>Loading...</p>);
+        return (
+            <Dimmer active>
+                <Loader />
+            </Dimmer>
+        );
     }
 
     if (error) {
@@ -37,7 +42,7 @@ const DirectMessage = ({ match: { params: { teamId, userId } } }) => {
         return (<p>An error has occured</p>);
     }
 
-    const { teams, username } = data.getUser;
+    const { teams, username, id } = data.getUser;
 
     //const teams = [...allTeams, ...inviteTeams];
 
@@ -49,12 +54,21 @@ const DirectMessage = ({ match: { params: { teamId, userId } } }) => {
 
     const currentTeamId = teamIdInt || 0;
     const teamList = teams;
-    const teamIndex = currentTeamId ? teamList.findIndex(x => x.id === parseInt(currentTeamId, 10)) : 0;
+    const teamIndex = currentTeamId ? teamList.findIndex(x => x.id === currentTeamId) : 0;
     const team = teamIndex >= 0 ? teamList[teamIndex] : teamList[0];
+
+    if (!team.directMessageMembers.length) {
+        return (<Redirect to={`/teamview/${team.id}`} />);
+    }
+
+    const { directMessageMembers: dmUserlist } = team;
+    const directMessageUserIndex = dmUserlist.findIndex(x => x.id === userIdInt);
+    const directMessageUser = dmUserlist[directMessageUserIndex];
 
     return (
         <AppLayout>
             <SideBar
+                userId={id}
                 username={username}
                 allTeams={teamList.map((t) => ({
                     id: t.id,
@@ -63,13 +77,13 @@ const DirectMessage = ({ match: { params: { teamId, userId } } }) => {
                 }))}
                 currentTeam={team}
             />
-            <Header channelName="TEST DIRECT MESSAGES" />
+            <Header channelName={directMessageUser.username} />
             <DirectMessageList teamId={teamIdInt} userId={userIdInt} />
             <SendMessage
                 onSubmit={async (text) => {
                     await createMessage({ variables: { teamId: team.id, receiverId: userIdInt, message: text } });
                 }}
-                header="TEST DIRECT MESSAGES"
+                header={directMessageUser.username}
             />
         </AppLayout>
     );

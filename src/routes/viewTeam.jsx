@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { Redirect } from 'react-router-dom';
+import { Dimmer, Loader } from 'semantic-ui-react';
 import { ALL_TEAMS } from '../gql/team';
 import { SEND_MESSAGE } from '../gql/messages';
 import AppLayout from '../components/styledComponents/appLayout';
@@ -29,7 +30,11 @@ const ViewTeam = ({ match: { params: { teamId, channelId } } }) => {
     });
 
     if (loading) {
-        return (<p>Loading...</p>);
+        return (
+            <Dimmer active>
+                <Loader />
+            </Dimmer>
+        );
     }
 
     if (error) {
@@ -37,7 +42,7 @@ const ViewTeam = ({ match: { params: { teamId, channelId } } }) => {
         return (<p>An error has occured</p>);
     }
 
-    const { teams, username } = data.getUser;
+    const { teams, username, id } = data.getUser;
 
     //const teams = [...allTeams, ...inviteTeams];
 
@@ -58,6 +63,7 @@ const ViewTeam = ({ match: { params: { teamId, channelId } } }) => {
     return (
         <AppLayout>
             <SideBar
+                userId={id}
                 username={username}
                 allTeams={teamList.map((t) => ({
                     id: t.id,
