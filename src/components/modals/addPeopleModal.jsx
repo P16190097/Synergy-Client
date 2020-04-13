@@ -6,10 +6,10 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { ADD_USER_TO_TEAM } from '../../gql/team';
 //import normalizeErrors from '../../normalizeErrors';
 
-const AddChannelModal = ({ open, onClose, currentTeamId }) => {
+const AddUserModal = ({ open, onClose, currentTeamId }) => {
     const [errorMsg, setErrorMsg] = useState(null);
 
-    const [addTeamMember, { loading: submitting }] = useMutation(ADD_USER_TO_TEAM, {
+    const [addMember, { loading: submitting }] = useMutation(ADD_USER_TO_TEAM, {
         onCompleted: (data) => {
             const { success, errors } = data.addTeamMember;
             if (success) {
@@ -38,25 +38,11 @@ const AddChannelModal = ({ open, onClose, currentTeamId }) => {
                         }}
                         onSubmit={values => {
                             setErrorMsg(null);
-                            addTeamMember({
+                            addMember({
                                 variables: {
                                     email: values.email,
                                     teamId: currentTeamId,
                                 },
-                                // update: (proxy, { data: { addTeamMember } }) => {
-                                //     const { channel, success } = createChannel;
-                                //     if (success) {
-                                //         // Read the data from our cache for this query.
-                                //         const data = proxy.readQuery({ query: ALL_TEAMS });
-                                //         // Write our data back to the cache with the new comment in it
-                                //         const teamIndex = data.allTeams.findIndex(x => x.id === currentTeamId);
-                                //         data.allTeams[teamIndex].channels.push(channel);
-                                //         proxy.writeQuery({
-                                //             query: ALL_TEAMS,
-                                //             data,
-                                //         });
-                                //     }
-                                // },
                             });
                         }}
                         validate={values => {
@@ -124,16 +110,16 @@ const AddChannelModal = ({ open, onClose, currentTeamId }) => {
     );
 };
 
-AddChannelModal.propTypes = {
+AddUserModal.propTypes = {
     open: PropTypes.bool,
     onClose: PropTypes.func,
     currentTeamId: PropTypes.number,
 };
 
-AddChannelModal.defaultProps = {
+AddUserModal.defaultProps = {
     open: false,
     onClose: () => { },
     currentTeamId: null,
 };
 
-export default AddChannelModal;
+export default AddUserModal;

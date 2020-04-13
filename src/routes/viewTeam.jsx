@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { Redirect } from 'react-router-dom';
 import { Dimmer, Loader } from 'semantic-ui-react';
-import { ALL_TEAMS } from '../gql/team';
+import { GET_USER } from '../gql/user';
 import { SEND_MESSAGE } from '../gql/messages';
 import AppLayout from '../components/styledComponents/appLayout';
 import Header from '../components/header';
@@ -12,7 +12,7 @@ import SideBar from '../containers/sideBar';
 import MesssageList from '../components/messageList';
 
 const ViewTeam = ({ match: { params: { teamId, channelId } } }) => {
-    const { loading, error, data } = useQuery(ALL_TEAMS, {
+    const { loading, error, data } = useQuery(GET_USER, {
         fetchPolicy: 'network-only',
     });
 

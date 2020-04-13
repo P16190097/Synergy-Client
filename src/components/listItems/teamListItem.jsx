@@ -4,40 +4,33 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 const TeamListIcon = styled.li`
-    height: 50px;
-    width: 50px;
+    height: 75px;
     background-color: #676066;
     color: #fff;
     margin: auto;
-    margin-bottom: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-sze: 24px;
-    border-radius: 11px;
+    font-size: 24px;
     font-weight: bold;
     &:hover {
         // border-style: solid;
         // border-width: thick;
         // boder-color: #767676;
-        box-shadow: 0px 0px 8px 3px #ff9900;
+        background-color: #ff9900;
     }
 `;
 
 const ActiveTeamListIcon = styled.li`
-    height: 50px;
-    width: 50px;
-    background-color: #676066;
+    height: 75px;
+    background-color: #f2711c;
     color: #fff;
     margin: auto;
-    margin-bottom: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-sze: 24px;
-    border-radius: 11px;
+    font-size: 24px;
     font-weight: bold;
-    box-shadow: 0px 0px 8px 3px #ff9900;
 `;
 
 const TeamListItem = ({ id, letter, active }) => (

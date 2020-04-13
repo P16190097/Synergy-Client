@@ -15,32 +15,14 @@ export const CREATE_TEAM = gql`
     }
  `;
 
-export const ALL_TEAMS = gql`
-    query {
-        getUser {
-            id
-            username
-            teams {
-                id
-                name
-                admin
-                directMessageMembers {
-                    id
-                    username
-                }
-                channels {
-                    id
-                    name
-                }
-            }
-        }
-    }
-`;
-
 export const ADD_USER_TO_TEAM = gql`
 mutation($email: String!, $teamId: Int!) {
     addTeamMember(email: $email, teamId: $teamId) {
         success
+        user {
+            id
+            username
+        }
         errors {
             path
             message
