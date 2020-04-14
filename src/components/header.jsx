@@ -8,17 +8,16 @@ const HeaderWrapper = styled.div`
     grid-row: 2;
     padding: 10px;
     background-color: #1e1e1e;
-    color: #ff9900 !important;
 `;
 
-const StyledHeader = styled(SemanticHeader)({
-    color: '#ff9900 !important',
-});
+// const StyledHeader = styled(SemanticHeader)({
+//     color: '#ff9900 !important',
+// });
 
 const Header = ({ channelName }) => {
     return (
         <HeaderWrapper>
-            <StyledHeader>#{channelName}</StyledHeader>
+            <SemanticHeader color="orange">#{channelName}</SemanticHeader>
         </HeaderWrapper>
     );
 };

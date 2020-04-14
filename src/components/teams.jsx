@@ -16,6 +16,7 @@ const TeamList = styled.ul`
     width: 100%;
     padding-left: 0px;
     list-style: none;
+    overflow-y: auto;
 `;
 
 const Teams = ({ teams }) => {
