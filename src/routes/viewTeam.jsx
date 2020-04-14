@@ -6,7 +6,7 @@ import { Dimmer, Loader } from 'semantic-ui-react';
 import { GET_USER } from '../gql/user';
 import { SEND_MESSAGE } from '../gql/messages';
 import AppLayout from '../components/styledComponents/appLayout';
-import Navbar from '../components/styledComponents/navbar';
+import Navbar from '../components/navbar';
 import Header from '../components/header';
 import SendMessage from '../components/sendMessage';
 import SideBar from '../containers/sideBar';
@@ -63,7 +63,7 @@ const ViewTeam = ({ match: { params: { teamId, channelId } } }) => {
 
     return (
         <AppLayout>
-            <Navbar>Stuff</Navbar>
+            <Navbar />
             <SideBar
                 userId={id}
                 username={username}

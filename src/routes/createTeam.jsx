@@ -14,7 +14,7 @@ const CreateTeam = () => {
     };
 
     const navigateToTeam = (id) => {
-        history.push(`/teamview/${id}`);
+        history.push(`/team/${id}`);
     };
 
     const [createTeam, { loading: submitting }] = useMutation(CREATE_TEAM, {

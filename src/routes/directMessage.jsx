@@ -6,6 +6,7 @@ import { Dimmer, Loader } from 'semantic-ui-react';
 import { GET_USER, GET_SINGLE_USER } from '../gql/user';
 import { SEND_DIRECT_MESSAGE } from '../gql/messages';
 import AppLayout from '../components/styledComponents/appLayout';
+import Navbar from '../components/navbar';
 import Header from '../components/header';
 import SendMessage from '../components/sendMessage';
 import SideBar from '../containers/sideBar';
@@ -67,11 +68,12 @@ const DirectMessage = ({ match: { params: { teamId, userId } } }) => {
     const team = teamIndex >= 0 ? teamList[teamIndex] : teamList[0];
 
     if (!team.directMessageMembers.length) {
-        return (<Redirect to={`/teamview/${team.id}`} />);
+        return (<Redirect to={`/team/${team.id}`} />);
     }
 
     return (
         <AppLayout>
+            <Navbar />
             <SideBar
                 userId={id}
                 username={username}

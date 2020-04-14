@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import SideBarListItem from './sideBarListItem';
 
 const ChannelListItem = ({ id, name }, teamId) => (
-    <Link to={`/${teamId}/${id}`} key={`channel-${id}`}>
+    <Link to={`/team/${teamId}/${id}`} key={`channel-${id}`}>
         <SideBarListItem>
             # {name}
         </SideBarListItem>
