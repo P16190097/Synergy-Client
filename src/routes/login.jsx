@@ -1,7 +1,7 @@
 import React, { memo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useMutation } from '@apollo/react-hooks';
-import { Container, Header, Input, Button, Message } from 'semantic-ui-react';
+import { Container, Header, Button, Message, Form as SemanticForm, Divider, Grid, Segment } from 'semantic-ui-react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { AUTHENTICATE_USER } from '../gql/user';
 
@@ -35,7 +35,7 @@ const Login = () => {
 
     return (
         <Container text>
-            <Header as="h2">Login</Header>
+            <Header as="h2" color="orange">Login</Header>
             <Formik
                 initialValues={{
                     username: '',
@@ -66,56 +66,70 @@ const Login = () => {
                 }}
             >
                 {({ setTouched, touched, isSubmitting, setFieldValue, errors, handleSubmit }) => (
-                    //values
-                    <Form
-                        onKeyDown={(e) => {
-                            if (e.key === 'Enter' && !isSubmitting) {
-                                handleSubmit();
-                            }
-                        }}
-                    >
-                        <Field
-                            name="email"
-                            type="email"
-                            component={Input}
-                            onBlur={() => setTouched({ email: true })}
-                            onChange={(e) => setFieldValue('email', e.target.value)}
-                            placeholder="Email"
-                            fluid
-                            error={Boolean(errors.email) && touched.email}
-                        />
-                        <ErrorMessage name="email" component="span" />
-                        <br />
+                    <Segment placeholder inverted loading={isSubmitting}>
+                        <Grid columns={2} relaxed="very" stackable>
+                            <Grid.Column>
+                                <Form
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter' && !isSubmitting) {
+                                            handleSubmit();
+                                        }
+                                    }}
+                                >
+                                    <Field
+                                        name="email"
+                                        type="email"
+                                        component={SemanticForm.Input}
+                                        onBlur={() => setTouched({ email: true })}
+                                        onChange={(e) => setFieldValue('email', e.target.value)}
+                                        placeholder="Email"
+                                        error={Boolean(errors.email) && touched.email}
+                                        icon="user"
+                                        iconPosition="left"
+                                        label="Email"
+                                        fluid
+                                    />
+                                    <ErrorMessage name="email" component="div" className="login-error" />
+                                    <br />
 
-                        <Field
-                            name="password"
-                            type="password"
-                            component={Input}
-                            onBlur={() => setTouched({ password: true })}
-                            onChange={(e) => setFieldValue('password', e.target.value)}
-                            placeholder="Password"
-                            fluid
-                            error={Boolean(errors.password) && touched.password}
-                        />
-                        <ErrorMessage name="password" component="span" />
-                        <br />
+                                    <Field
+                                        name="password"
+                                        type="password"
+                                        component={SemanticForm.Input}
+                                        onBlur={() => setTouched({ password: true })}
+                                        onChange={(e) => setFieldValue('password', e.target.value)}
+                                        placeholder="Password"
+                                        error={Boolean(errors.password) && touched.password}
+                                        icon="lock"
+                                        iconPosition="left"
+                                        label="Password"
+                                        fluid
+                                    />
+                                    <ErrorMessage name="password" component="div" className="login-error" />
+                                    <br />
 
-                        {errorMsg && (
-                            <Message error list={errorMsg} />
-                        )}
+                                    {errorMsg && (
+                                        <Message error list={errorMsg} />
+                                    )}
 
-                        <div>
-                            <Button type="submit" disabled={isSubmitting}>Login</Button>
-                            <Button primary onClick={navigateRegister}>Sign Up</Button>
-                        </div>
+                                    <Button type="submit" disabled={isSubmitting} color="orange">Login</Button>
 
-                        {submitting && (
-                            // <LoadingSpinner
-                            //     loading={submitting}
-                            // />
-                            <span>sending data...</span>
-                        )}
-                    </Form>
+                                    {submitting && (
+                                        // <LoadingSpinner
+                                        //     loading={submitting}
+                                        // />
+                                        <span>sending data...</span>
+                                    )}
+                                </Form>
+                            </Grid.Column>
+
+                            <Grid.Column verticalAlign="middle">
+                                <Button content="Sign up" icon="signup" size="big" onClick={navigateRegister} />
+                            </Grid.Column>
+                        </Grid>
+
+                        <Divider vertical inverted>Or</Divider>
+                    </Segment>
                 )}
             </Formik>
         </Container>

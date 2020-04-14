@@ -32,7 +32,7 @@ const Register = () => {
 
     return (
         <Container text>
-            <Header as="h2">Register Account</Header>
+            <Header as="h2" color="orange">Register Account</Header>
             <Formik
                 initialValues={{
                     username: '',

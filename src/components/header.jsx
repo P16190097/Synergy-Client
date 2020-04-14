@@ -5,8 +5,8 @@ import { Header as SemanticHeader } from 'semantic-ui-react';
 
 const HeaderWrapper = styled.div`
     grid-column: 3;
-    grid-row: 1;
-    background-color: #252526;
+    grid-row: 2;
+    background-color: #1e1e1e;
     color: #ff9900 !important;
 `;
 

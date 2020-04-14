@@ -41,7 +41,7 @@ const CreateTeam = () => {
 
     return (
         <Container text>
-            <Header as="h2">Create Team</Header>
+            <Header as="h2" color="orange">Create Team</Header>
             <Formik
                 initialValues={{
                     username: '',

@@ -7,7 +7,7 @@ import UserListItem from './listItems/userListItem';
 
 const ChannelWrapper = styled.div`
     grid-column: 2;
-    grid-row: 1 / 4;
+    grid-row: 2 / 5;
     background-color: #252526;
     color: #9e9e9e;
 `;
