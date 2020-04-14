@@ -46,11 +46,10 @@ const Router = () => {
     <BrowserRouter>
       <Switch>
         <PrivateRoute path="/createteam" exact component={CreateTeam} />
-        <PrivateRoute path="/teamview/:teamId?/:channelId?" exact component={ViewTeam} />
-        <PrivateRoute path="/teamview/dm/:teamId/:userId" exact component={DirectMessage} />
+        <PrivateRoute path="/:teamId?/:channelId?" exact component={ViewTeam} />
+        <PrivateRoute path="/dm/:teamId/:userId" exact component={DirectMessage} />
         <Route path="/login" exact component={Login} />
         <Route path="/register" exact component={Register} />
-        <Route path="/" exact component={Home} />
       </Switch>
     </BrowserRouter>
   );

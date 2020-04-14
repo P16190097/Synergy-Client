@@ -5,7 +5,7 @@ import SideBarListItem from './sideBarListItem';
 import Bubble from './Bubble';
 
 const UserListItem = ({ id, username }, teamId) => (
-    <Link to={`/teamview/dm/${teamId}/${id}`} key={`direct-message-${id}`}>
+    <Link to={`/dm/${teamId}/${id}`} key={`direct-message-${id}`}>
         <SideBarListItem key={`user-${id}`}>
             <Bubble /> {username}
         </SideBarListItem>

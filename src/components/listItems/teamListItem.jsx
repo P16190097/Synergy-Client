@@ -5,7 +5,7 @@ import ActiveTeamListIcon from '../styledComponents/activeTeamListIcon';
 import TeamListIcon from '../styledComponents/teamListIcon';
 
 const TeamListItem = ({ id, letter, active }) => (
-    <Link key={`team-${id}`} to={`/teamview/${id}`}>
+    <Link key={`team-${id}`} to={`/${id}`}>
         {active ? (
             <ActiveTeamListIcon key={`team-${id}`}>
                 {letter}
