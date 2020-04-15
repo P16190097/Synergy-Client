@@ -51,7 +51,6 @@ const DirectMessage = ({ match: { params: { teamId, userId } } }) => {
     }
 
     const { teams, username, id } = data.getUser;
-    console.log(userData);
     const { getSingleUser } = userData;
 
     //const teams = [...allTeams, ...inviteTeams];

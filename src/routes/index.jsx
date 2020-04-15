@@ -7,6 +7,7 @@ import CreateTeam from './createTeam';
 import Home from './home';
 import ViewTeam from './viewTeam';
 import DirectMessage from './directMessage';
+import ErrorPage from './errorPage';
 //import PrivateRoute from './privateRoute';
 //import logo from './logo.svg';
 
@@ -52,6 +53,7 @@ const Router = () => {
         <Route path="/login" exact component={Login} />
         <Route path="/register" exact component={Register} />
         <Route path="*" exact component={() => (<Redirect to={{ pathname: '/home' }} />)} />
+        <Route path="/error" exact component={ErrorPage} />
       </Switch>
     </BrowserRouter>
   );

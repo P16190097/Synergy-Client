@@ -15,6 +15,9 @@ const Login = () => {
     const navigateHome = () => {
         history.push('/home');
     };
+    const navigateToError = () => {
+        history.push('/error');
+    };
 
     const [authenticate, { loading: submitting }] = useMutation(AUTHENTICATE_USER, {
         onCompleted: (data) => {
@@ -30,6 +33,7 @@ const Login = () => {
         onError: (error) => {
             console.log('GraphQl failed');
             console.log(error);
+            navigateToError();
         },
     });
 
@@ -89,7 +93,7 @@ const Login = () => {
                                         label="Email"
                                         fluid
                                     />
-                                    <ErrorMessage name="email" component="div" className="login-error" />
+                                    <ErrorMessage name="email">{(msg) => (<Message negative>{msg}</Message>)}</ErrorMessage>
                                     <br />
 
                                     <Field
@@ -105,7 +109,7 @@ const Login = () => {
                                         label="Password"
                                         fluid
                                     />
-                                    <ErrorMessage name="password" component="div" className="login-error" />
+                                    <ErrorMessage name="password">{(msg) => (<Message negative>{msg}</Message>)}</ErrorMessage>
                                     <br />
 
                                     {errorMsg && (

@@ -13,6 +13,10 @@ const Register = () => {
         history.push('/login');
     };
 
+    const navigateToError = () => {
+        history.push('/error');
+    };
+
     const [register, { loading: submitting }] = useMutation(REGISTER_USER, {
         onCompleted: (data) => {
             const { success, errors } = data.registerUser;
@@ -26,6 +30,7 @@ const Register = () => {
             // TODO: ADD BETTER ERROR HANDLING
             console.log('GraphQl failed');
             console.log(error);
+            navigateToError();
         },
     });
 
@@ -102,11 +107,7 @@ const Register = () => {
                                 inverted
                                 label="Username"
                             />
-                            {errors.username && errors.username.length > 0 && (
-                                <Message negative>
-                                    <ErrorMessage name="username" component="span" />
-                                </Message>
-                            )}
+                            <ErrorMessage name="username">{(msg) => (<Message negative>{msg}</Message>)}</ErrorMessage>
                         </SemanticForm.Field>
                         <br />
 
@@ -123,7 +124,7 @@ const Register = () => {
                                 inverted
                                 label="Email"
                             />
-                            <ErrorMessage name="email" component="span" />
+                            <ErrorMessage name="email">{(msg) => (<Message negative>{msg}</Message>)}</ErrorMessage>
                         </SemanticForm.Field>
                         <br />
 
@@ -140,7 +141,7 @@ const Register = () => {
                                 inverted
                                 label="Password"
                             />
-                            <ErrorMessage name="password" component="span" />
+                            <ErrorMessage name="password">{(msg) => (<Message negative>{msg}</Message>)}</ErrorMessage>
                         </SemanticForm.Field>
                         <br />
 
@@ -157,7 +158,7 @@ const Register = () => {
                                 inverted
                                 label="ConfirmPassword"
                             />
-                            <ErrorMessage name="confirmPassword" component="span" />
+                            <ErrorMessage name="confirmPassword">{(msg) => (<Message negative>{msg}</Message>)}</ErrorMessage>
                         </SemanticForm.Field>
                         <br />
 

@@ -17,6 +17,10 @@ const CreateTeam = () => {
         history.push(`/team/${id}`);
     };
 
+    const navigateToError = () => {
+        history.push('/error');
+    };
+
     const [createTeam, { loading: submitting }] = useMutation(CREATE_TEAM, {
         onCompleted: (data) => {
             const { success, errors, team } = data.createTeam;
@@ -34,7 +38,9 @@ const CreateTeam = () => {
             console.log(error);
             if (error.message === 'Not Authenticated') {
                 navigateLogin();
+                return;
             }
+            navigateToError();
         },
     });
 
@@ -87,7 +93,7 @@ const CreateTeam = () => {
                                 error={Boolean(errors.teamName && touched.teamName)}
                                 label="Team Name"
                             />
-                            <ErrorMessage name="teamName" component="span" />
+                            <ErrorMessage name="teamName">{(msg) => (<Message negative>{msg}</Message>)}</ErrorMessage>
                         </SemanticForm.Field>
                         <br />
 
