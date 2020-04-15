@@ -48,9 +48,10 @@ const Router = () => {
         <PrivateRoute path="/createteam" exact component={CreateTeam} />
         <PrivateRoute path="/team/:teamId?/:channelId?" exact component={ViewTeam} />
         <PrivateRoute path="/dm/:teamId/:userId" exact component={DirectMessage} />
+        <PrivateRoute path="/home" exact component={Home} />
         <Route path="/login" exact component={Login} />
         <Route path="/register" exact component={Register} />
-        <Route path="*" exact component={Home} />
+        <Route path="*" exact component={() => (<Redirect to={{ pathname: '/home' }} />)} />
       </Switch>
     </BrowserRouter>
   );

@@ -13,7 +13,7 @@ const Login = () => {
         history.push('/register');
     };
     const navigateHome = () => {
-        history.push('/team/');
+        history.push('/home');
     };
 
     const [authenticate, { loading: submitting }] = useMutation(AUTHENTICATE_USER, {

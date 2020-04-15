@@ -91,7 +91,6 @@ const Register = () => {
                         }}
                     >
                         <SemanticForm.Field>
-                            <label htmlFor="username">Username</label>
                             <Field
                                 name="username"
                                 component={Input}
@@ -100,13 +99,18 @@ const Register = () => {
                                 placeholder="Username"
                                 fluid
                                 error={Boolean(errors.username && touched.username)}
+                                inverted
+                                label="Username"
                             />
-                            <ErrorMessage name="username" component="span" />
+                            {errors.username && errors.username.length > 0 && (
+                                <Message negative>
+                                    <ErrorMessage name="username" component="span" />
+                                </Message>
+                            )}
                         </SemanticForm.Field>
                         <br />
 
                         <SemanticForm.Field>
-                            <label htmlFor="email">Email</label>
                             <Field
                                 name="email"
                                 type="email"
@@ -116,13 +120,14 @@ const Register = () => {
                                 placeholder="Email"
                                 fluid
                                 error={Boolean(errors.email && touched.email)}
+                                inverted
+                                label="Email"
                             />
                             <ErrorMessage name="email" component="span" />
                         </SemanticForm.Field>
                         <br />
 
                         <SemanticForm.Field>
-                            <label htmlFor="password">Password</label>
                             <Field
                                 name="password"
                                 type="password"
@@ -132,13 +137,14 @@ const Register = () => {
                                 placeholder="Password"
                                 fluid
                                 error={Boolean(errors.password && touched.password)}
+                                inverted
+                                label="Password"
                             />
                             <ErrorMessage name="password" component="span" />
                         </SemanticForm.Field>
                         <br />
 
                         <SemanticForm.Field>
-                            <label htmlFor="confirmPassword">Confirm Password</label>
                             <Field
                                 name="confirmPassword"
                                 type="password"
@@ -148,6 +154,8 @@ const Register = () => {
                                 placeholder="Confirm Password"
                                 fluid
                                 error={Boolean(errors.confirmPassword && touched.confirmPassword)}
+                                inverted
+                                label="ConfirmPassword"
                             />
                             <ErrorMessage name="confirmPassword" component="span" />
                         </SemanticForm.Field>
@@ -157,7 +165,7 @@ const Register = () => {
                             <Message error header="An Error has occured:" list={errorMsg} />
                         )}
 
-                        <Button type="submit" disabled={isSubmitting}>Create Account</Button>
+                        <Button type="submit" color="orange" disabled={isSubmitting}>Create Account</Button>
                     </Form>
                 )}
             </Formik>

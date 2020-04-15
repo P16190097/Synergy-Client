@@ -1,5 +1,14 @@
 import gql from 'graphql-tag';
 
+export const GET_USERS_TEAMS = gql`
+    query {
+        getUserTeams {
+            id
+            name
+        }
+    }
+`;
+
 export const CREATE_TEAM = gql`
     mutation($teamName: String!) {
         createTeam(name: $teamName) {

@@ -77,7 +77,6 @@ const CreateTeam = () => {
                         }}
                     >
                         <SemanticForm.Field>
-                            <label htmlFor="teamName">Team Name</label>
                             <Field
                                 name="teamName"
                                 component={Input}
@@ -86,6 +85,7 @@ const CreateTeam = () => {
                                 placeholder="Team name here"
                                 fluid
                                 error={Boolean(errors.teamName && touched.teamName)}
+                                label="Team Name"
                             />
                             <ErrorMessage name="teamName" component="span" />
                         </SemanticForm.Field>

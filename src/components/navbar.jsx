@@ -21,7 +21,7 @@ const Navbar = () => {
 
     return (
         <NavbarContainer>
-            <Image src="./img/logo.png" href="/home" size="small" inline className="logo" />
+            <Image src="/img/logo.png" href="/home" size="small" inline className="logo" />
             <Button color="orange" size="tiny" floated="right" onClick={logout}>
                 Logout
             </Button>
