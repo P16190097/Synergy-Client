@@ -5,6 +5,7 @@ export const GET_USERS_TEAMS = gql`
         getUserTeams {
             id
             name
+            description
             admin
         }
     }
@@ -15,13 +16,14 @@ export const GET_TEAM_FOR_EDIT = gql`
         getTeam(teamId: $teamId) {
             id
             name
+            description
         }
     }
 `;
 
 export const CREATE_TEAM = gql`
-    mutation($teamName: String!) {
-        createTeam(name: $teamName) {
+    mutation($teamName: String!, $description: String!) {
+        createTeam(name: $teamName, description: $description) {
             success
             team {
                 id
@@ -35,8 +37,8 @@ export const CREATE_TEAM = gql`
  `;
 
 export const EDIT_TEAM = gql`
-    mutation($teamId: Int!, $teamName: String!) {
-        editTeam(teamId: $teamId, teamName: $teamName) {
+    mutation($teamId: Int!, $teamName: String!, $description: String!) {
+        editTeam(teamId: $teamId, teamName: $teamName, description: $description) {
             success
             errors {
                 path

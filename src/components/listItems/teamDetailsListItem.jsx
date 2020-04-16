@@ -17,7 +17,7 @@ const TeamDetailsListItem = ({ team }) => {
                         {team.admin ? 'Admin' : 'Member'}
                     </Item.Meta>
                     <Item.Description className="message-text">
-                        Team Description goes here
+                        {team.description}
                     </Item.Description>
                 </Item.Content>
                 {team.admin && <Button color="orange" onClick={() => history.push(`/edit/team/${team.id}`)}>Edit</Button>}

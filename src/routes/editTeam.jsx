@@ -2,8 +2,8 @@ import React, { memo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { useHistory } from 'react-router-dom';
-import { Container, Header, Input, Button, Message, Form as SemanticForm, Dimmer, Loader } from 'semantic-ui-react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Container, Header, Input, TextArea, Button, Message, Form as SemanticForm, Dimmer, Loader } from 'semantic-ui-react';
+import { Formik, Field, ErrorMessage } from 'formik';
 import { EDIT_TEAM, GET_TEAM_FOR_EDIT } from '../gql/team';
 
 const EditTeam = ({ match: { params: { teamId } } }) => {
@@ -55,7 +55,7 @@ const EditTeam = ({ match: { params: { teamId } } }) => {
         );
     }
 
-    if (error) {
+    if (error || !data) {
         navigateToError();
     }
 
@@ -63,10 +63,11 @@ const EditTeam = ({ match: { params: { teamId } } }) => {
 
     return (
         <Container text>
-            <Header as="h2" color="orange">Create Team</Header>
+            <Header as="h2" color="orange">Edit Team</Header>
             <Formik
                 initialValues={{
                     teamName: team.name,
+                    description: team.description,
                 }}
                 onSubmit={values => {
                     setErrorMsg(null);
@@ -75,6 +76,7 @@ const EditTeam = ({ match: { params: { teamId } } }) => {
                         variables: {
                             teamId: teamIdInt,
                             teamName: values.teamName,
+                            description: values.description,
                         },
                     });
                 }}
@@ -90,7 +92,7 @@ const EditTeam = ({ match: { params: { teamId } } }) => {
             >
                 {({ setTouched, touched, isSubmitting, setFieldValue, errors, handleSubmit, values }) => (
                     //values
-                    <Form
+                    <SemanticForm
                         onKeyDown={(e) => {
                             if (e.key === 'Enter' && !isSubmitting) {
                                 handleSubmit();
@@ -113,12 +115,27 @@ const EditTeam = ({ match: { params: { teamId } } }) => {
                         </SemanticForm.Field>
                         <br />
 
+                        <SemanticForm.Field>
+                            <Field
+                                name="description"
+                                component={TextArea}
+                                onBlur={() => setTouched({ description: true })}
+                                onChange={(e) => setFieldValue('description', e.target.value)}
+                                placeholder="Team description here"
+                                value={values.description}
+                                rows={3}
+                                label="Description"
+                            />
+                            <ErrorMessage name="description">{(msg) => (<Message negative>{msg}</Message>)}</ErrorMessage>
+                        </SemanticForm.Field>
+                        <br />
+
                         {errorMsg && (
                             <Message error header="An Error has occured:" list={errorMsg} />
                         )}
 
-                        <Button type="submit" disabled={isSubmitting}>Edit Team</Button>
-                    </Form>
+                        <Button type="submit" color="orange" disabled={isSubmitting} onClick={() => handleSubmit()}>Confirm</Button>
+                    </SemanticForm>
                 )}
             </Formik>
             {submitting && (

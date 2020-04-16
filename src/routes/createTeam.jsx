@@ -1,8 +1,8 @@
 import React, { memo, useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { useHistory } from 'react-router-dom';
-import { Container, Header, Input, Button, Message, Form as SemanticForm } from 'semantic-ui-react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Container, Header, Input, Button, Message, Form as SemanticForm, TextArea } from 'semantic-ui-react';
+import { Formik, Field, ErrorMessage } from 'formik';
 import { CREATE_TEAM } from '../gql/team';
 
 const CreateTeam = () => {
@@ -51,8 +51,7 @@ const CreateTeam = () => {
             <Formik
                 initialValues={{
                     username: '',
-                    email: '',
-                    password: '',
+                    description: '',
                 }}
                 onSubmit={values => {
                     setErrorMsg(null);
@@ -60,6 +59,7 @@ const CreateTeam = () => {
                     createTeam({
                         variables: {
                             teamName: values.teamName,
+                            description: values.description,
                         },
                     });
                 }}
@@ -75,7 +75,7 @@ const CreateTeam = () => {
             >
                 {({ setTouched, touched, isSubmitting, setFieldValue, errors, handleSubmit }) => (
                     //values
-                    <Form
+                    <SemanticForm
                         onKeyDown={(e) => {
                             if (e.key === 'Enter' && !isSubmitting) {
                                 handleSubmit();
@@ -97,12 +97,26 @@ const CreateTeam = () => {
                         </SemanticForm.Field>
                         <br />
 
+                        <SemanticForm.Field>
+                            <Field
+                                name="description"
+                                component={TextArea}
+                                onBlur={() => setTouched({ description: true })}
+                                onChange={(e) => setFieldValue('description', e.target.value)}
+                                placeholder="Team description here"
+                                rows={3}
+                                label="Description"
+                            />
+                            <ErrorMessage name="description">{(msg) => (<Message negative>{msg}</Message>)}</ErrorMessage>
+                        </SemanticForm.Field>
+                        <br />
+
                         {errorMsg && (
                             <Message error header="An Error has occured:" list={errorMsg} />
                         )}
 
-                        <Button type="submit" disabled={isSubmitting}>Create Team</Button>
-                    </Form>
+                        <Button type="submit" color="orange" disabled={isSubmitting} onClick={() => handleSubmit()}>Create Team</Button>
+                    </SemanticForm>
                 )}
             </Formik>
             {submitting && (
