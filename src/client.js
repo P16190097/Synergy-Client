@@ -7,12 +7,14 @@ import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
 
 const httpLink = new HttpLink({
-    uri: 'http://localhost:8080/graphql',
+    // uri: 'http://localhost:8080/graphql',
+    uri: 'http://192.168.0.4:8080/graphql',
     credentials: 'same-origin',
 });
 
 const wsLink = new WebSocketLink({
-    uri: 'ws://localhost:8080/graphql',
+    // uri: 'ws://localhost:8080/graphql',
+    uri: 'ws://192.168.0.4:8080/graphql',
     options: {
         reconnect: true,
         lazy: true,
@@ -41,11 +43,11 @@ const authMiddlewareLink = new ApolloLink((operation, forward) => {
 const authAfterwareLink = new ApolloLink((operation, forward) => {
     return forward(operation).map(response => {
         const context = operation.getContext();
-        const { response: { headers } } = context;
+        const { headers } = context;
 
         if (headers) {
-            const token = headers.get('x-token');
-            const refreshToken = headers.get('x-refresh-token');
+            const token = headers['x-token'];
+            const refreshToken = headers['x-refresh-token'];
 
             if (token) {
                 localStorage.setItem('token', token);

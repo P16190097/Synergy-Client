@@ -1,24 +1,51 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery, useMutation } from '@apollo/react-hooks';
 import { Redirect } from 'react-router-dom';
-import { ALL_TEAMS } from '../gql/team';
-import AppLayout from '../components/appLayout';
+import { Dimmer, Loader } from 'semantic-ui-react';
+import { GET_USER } from '../gql/user';
+import { SEND_MESSAGE } from '../gql/messages';
+import AppLayout from '../components/styledComponents/appLayout';
+import Navbar from '../components/navbar';
 import Header from '../components/header';
 import SendMessage from '../components/sendMessage';
 import SideBar from '../containers/sideBar';
 import MesssageList from '../components/messageList';
 
 const ViewTeam = ({ match: { params: { teamId, channelId } } }) => {
-    const { loading, error, data } = useQuery(ALL_TEAMS);
+    const { loading, error, data } = useQuery(GET_USER, {
+        fetchPolicy: 'network-only',
+    });
 
-    if (loading || error) {
+    const [createMessage] = useMutation(SEND_MESSAGE, {
+        onCompleted: (resp) => {
+            const { success, errors } = resp.createMessage;
+            if (!success) {
+                console.log(errors);
+            }
+        },
+        onError: (err) => {
+            console.log('GraphQl failed');
+            console.log(err);
+        },
+    });
+
+    if (loading) {
+        return (
+            <Dimmer active>
+                <Loader />
+            </Dimmer>
+        );
+    }
+
+    if (error) {
+        console.log(error);
         return (<p>An error has occured</p>);
     }
 
-    const { allTeams, inviteTeams } = data;
+    const { teams, username, id } = data.getUser;
 
-    const teams = [...allTeams, ...inviteTeams];
+    //const teams = [...allTeams, ...inviteTeams];
 
     if (!teams.length) {
         return (<Redirect to="/createteam" />);
@@ -36,8 +63,10 @@ const ViewTeam = ({ match: { params: { teamId, channelId } } }) => {
 
     return (
         <AppLayout>
+            <Navbar />
             <SideBar
-                currentTeamId={currentTeamId}
+                userId={id}
+                username={username}
                 allTeams={teamList.map((t) => ({
                     id: t.id,
                     letter: t.name.charAt(0).toUpperCase(),
@@ -56,8 +85,10 @@ const ViewTeam = ({ match: { params: { teamId, channelId } } }) => {
                         channelId={channel.id}
                     />
                     <SendMessage
-                        channelName={channel.name}
-                        channelId={channel.id}
+                        onSubmit={async (text) => {
+                            await createMessage({ variables: { message: text, channelId: parseInt(channel.id, 10) } });
+                        }}
+                        header={channel.name}
                     />
                 </>
             ) : (

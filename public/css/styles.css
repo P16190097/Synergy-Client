@@ -1,5 +1,5 @@
 body {
-  background-color: #171c25;
+  background-color: #1e1e1e !important;
 }
 
 .white {
@@ -21,4 +21,13 @@ body {
 
 .message-time {
   color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.segment {
+  background-color: #1e1e1e !important;
+}
+
+.login-error {
+  max-width: 15rem;
+  margin: auto;
 }
