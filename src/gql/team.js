@@ -10,6 +10,15 @@ export const GET_USERS_TEAMS = gql`
     }
 `;
 
+export const GET_TEAM_FOR_EDIT = gql`
+    query($teamId: Int!) {
+        getTeam(teamId: $teamId) {
+            id
+            name
+        }
+    }
+`;
+
 export const CREATE_TEAM = gql`
     mutation($teamName: String!) {
         createTeam(name: $teamName) {
@@ -17,6 +26,18 @@ export const CREATE_TEAM = gql`
             team {
                 id
             }
+            errors {
+                path
+                message
+            }
+        }
+    }
+ `;
+
+export const EDIT_TEAM = gql`
+    mutation($teamId: Int!, $teamName: String!) {
+        editTeam(teamId: $teamId, teamName: $teamName) {
+            success
             errors {
                 path
                 message
