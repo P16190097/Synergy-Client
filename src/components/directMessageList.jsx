@@ -6,7 +6,7 @@ import moment from 'moment';
 import { GET_DIRECT_MESSAGES, NEW_DIRECT_MESSAGE_SUBSCRIPTION } from '../gql/messages';
 import Messages from './styledComponents/messages';
 
-const DirectMessageList = ({ teamId, userId }) => {
+const DirectMessageList = ({ teamId, userId, fetching }) => {
     const { subscribeToMore, loading, error, data } = useQuery(GET_DIRECT_MESSAGES, {
         variables: {
             teamId,
@@ -36,7 +36,7 @@ const DirectMessageList = ({ teamId, userId }) => {
         return unSubscribe;
     }, [subscribeToMore, teamId, userId]);
 
-    if (loading) {
+    if (loading || fetching) {
         return (
             <Loader />
         );
@@ -62,7 +62,7 @@ const DirectMessageList = ({ teamId, userId }) => {
                     </Message>
                 ))}
             </Message.Group>
-            <Header as="h2" icon textAlign="center">
+            <Header as="h2" icon textAlign="center" inverted>
                 <Icon name="users" circular className="orange" />
                 <Header.Content className="white">Start of chat history</Header.Content>
             </Header>
@@ -73,11 +73,13 @@ const DirectMessageList = ({ teamId, userId }) => {
 DirectMessageList.propTypes = {
     teamId: PropTypes.number,
     userId: PropTypes.number,
+    fetching: PropTypes.bool,
 };
 
 DirectMessageList.defaultProps = {
     teamId: null,
     userId: null,
+    fetching: false,
 };
 
 export default DirectMessageList;

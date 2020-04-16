@@ -7,6 +7,8 @@ import CreateTeam from './createTeam';
 import Home from './home';
 import ViewTeam from './viewTeam';
 import DirectMessage from './directMessage';
+import ErrorPage from './errorPage';
+import EditTeam from './editTeam';
 //import PrivateRoute from './privateRoute';
 //import logo from './logo.svg';
 
@@ -45,12 +47,16 @@ const Router = () => {
   return (
     <BrowserRouter>
       <Switch>
+        <PrivateRoute path="/edit/team/:teamId" exact component={EditTeam} />
+        {/* <PrivateRoute path="/edit/user/:userId" exact component={CreateTeam} /> */}
         <PrivateRoute path="/createteam" exact component={CreateTeam} />
-        <PrivateRoute path="/teamview/:teamId?/:channelId?" exact component={ViewTeam} />
-        <PrivateRoute path="/teamview/dm/:teamId/:userId" exact component={DirectMessage} />
+        <PrivateRoute path="/team/:teamId?/:channelId?" exact component={ViewTeam} />
+        <PrivateRoute path="/dm/:teamId/:userId" exact component={DirectMessage} />
+        <PrivateRoute path="/home" exact component={Home} />
         <Route path="/login" exact component={Login} />
         <Route path="/register" exact component={Register} />
-        <Route path="/" exact component={Home} />
+        <Route path="/error" exact component={ErrorPage} />
+        <Route path="*" exact component={() => (<Redirect to={{ pathname: '/home' }} />)} />
       </Switch>
     </BrowserRouter>
   );

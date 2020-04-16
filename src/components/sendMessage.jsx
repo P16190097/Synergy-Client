@@ -6,7 +6,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 
 const SendMessageWrapper = styled.div`
     grid-column: 3;
-    grid-row: 3;
+    grid-row: 4;
     margin: 20px;
 `;
 

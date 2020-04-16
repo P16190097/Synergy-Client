@@ -1,22 +1,43 @@
 import React from 'react';
-import { Container, Header } from 'semantic-ui-react';
+import { useHistory } from 'react-router-dom';
+import { Container, Header, Item, Divider, Button } from 'semantic-ui-react';
 import { useQuery } from '@apollo/react-hooks';
-import { ALL_USERS } from '../gql/user';
+import Navbar from '../components/navbar';
+import TeamDetailsListItem from '../components/listItems/teamDetailsListItem';
+import { GET_USERS_TEAMS } from '../gql/team';
 
 const Home = () => {
-    const { loading, error, data } = useQuery(ALL_USERS);
+    const { loading, error, data } = useQuery(GET_USERS_TEAMS);
+
+    const history = useHistory();
 
     if (loading || error) {
         return null;
     }
 
-    const { allUsers } = data;
+    const { getUserTeams: teams } = data;
 
     return (
-        <Container text>
-            <Header as="h2">Home</Header>
-            {allUsers.map(x => (<h1 key={`key-${x.id}`}>{x.email}</h1>))}
-        </Container>
+        <>
+            <Navbar />
+            <Container>
+                <Header color="orange" as="h1">Home</Header>
+                <Button color="orange" onClick={() => history.push('/createteam')}>Create New Team</Button>
+                {teams.length ? (
+                    <>
+                        <Header color="orange" as="h2">Your teams</Header>
+                        <Divider />
+                        <Item.Group>
+                            {teams.map(team => (
+                                <TeamDetailsListItem team={team} key={`team-${team.id}`} />
+                            ))}
+                        </Item.Group>
+                    </>
+                ) : (
+                        <Header color="orange" as="h2">You don&apos;t belong to any teams yet, create one to start chatting!</Header>
+                    )}
+            </Container>
+        </>
     );
 };
 

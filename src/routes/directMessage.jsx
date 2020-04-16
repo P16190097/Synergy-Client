@@ -3,16 +3,24 @@ import PropTypes from 'prop-types';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { Redirect } from 'react-router-dom';
 import { Dimmer, Loader } from 'semantic-ui-react';
-import { ALL_TEAMS } from '../gql/team';
+import { GET_USER, GET_SINGLE_USER } from '../gql/user';
 import { SEND_DIRECT_MESSAGE } from '../gql/messages';
 import AppLayout from '../components/styledComponents/appLayout';
+import Navbar from '../components/navbar';
 import Header from '../components/header';
 import SendMessage from '../components/sendMessage';
 import SideBar from '../containers/sideBar';
 import DirectMessageList from '../components/directMessageList';
 
 const DirectMessage = ({ match: { params: { teamId, userId } } }) => {
-    const { loading, error, data } = useQuery(ALL_TEAMS, {
+    const { loading: userLoading, data: userData } = useQuery(GET_SINGLE_USER, {
+        variables: {
+            userId: parseInt(userId, 10),
+        },
+        fetchPolicy: 'network-only',
+    });
+
+    const { loading, error, data } = useQuery(GET_USER, {
         fetchPolicy: 'network-only',
     });
 
@@ -43,6 +51,7 @@ const DirectMessage = ({ match: { params: { teamId, userId } } }) => {
     }
 
     const { teams, username, id } = data.getUser;
+    const { getSingleUser } = userData;
 
     //const teams = [...allTeams, ...inviteTeams];
 
@@ -58,15 +67,12 @@ const DirectMessage = ({ match: { params: { teamId, userId } } }) => {
     const team = teamIndex >= 0 ? teamList[teamIndex] : teamList[0];
 
     if (!team.directMessageMembers.length) {
-        return (<Redirect to={`/teamview/${team.id}`} />);
+        return (<Redirect to={`/team/${team.id}`} />);
     }
-
-    const { directMessageMembers: dmUserlist } = team;
-    const directMessageUserIndex = dmUserlist.findIndex(x => x.id === userIdInt);
-    const directMessageUser = dmUserlist[directMessageUserIndex];
 
     return (
         <AppLayout>
+            <Navbar />
             <SideBar
                 userId={id}
                 username={username}
@@ -77,13 +83,38 @@ const DirectMessage = ({ match: { params: { teamId, userId } } }) => {
                 }))}
                 currentTeam={team}
             />
-            <Header channelName={directMessageUser.username} />
-            <DirectMessageList teamId={teamIdInt} userId={userIdInt} />
+            <Header channelName={getSingleUser.username} />
+            <DirectMessageList teamId={teamIdInt} userId={userIdInt} fetching={userLoading} />
             <SendMessage
                 onSubmit={async (text) => {
-                    await createMessage({ variables: { teamId: team.id, receiverId: userIdInt, message: text } });
+                    await createMessage(
+                        {
+                            variables: {
+                                teamId: team.id,
+                                receiverId: userIdInt,
+                                message: text,
+                            },
+                            update: (proxy) => {
+                                // Read the data from our cache for this query.
+                                const cache = proxy.readQuery({ query: GET_USER });
+                                // Write our data back to the cache with the new channel in it
+                                const userDoesNotExist = cache.getUser.teams[teamIndex].directMessageMembers.every(user => user.id !== userIdInt);
+                                if (userDoesNotExist) {
+                                    cache.getUser.teams[teamIndex].directMessageMembers.unshift({
+                                        id: userIdInt,
+                                        username: getSingleUser.username,
+                                        __typename: 'User',
+                                    });
+                                    proxy.writeQuery({
+                                        query: GET_USER,
+                                        data: cache,
+                                    });
+                                }
+                            },
+                        },
+                    );
                 }}
-                header={directMessageUser.username}
+                header={getSingleUser.username}
             />
         </AppLayout>
     );

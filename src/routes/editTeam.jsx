@@ -1,17 +1,17 @@
 import React, { memo, useState } from 'react';
-import { useMutation } from '@apollo/react-hooks';
+import PropTypes from 'prop-types';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import { useHistory } from 'react-router-dom';
-import { Container, Header, Input, Button, Message, Form as SemanticForm, TextArea } from 'semantic-ui-react';
+import { Container, Header, Input, TextArea, Button, Message, Form as SemanticForm, Dimmer, Loader } from 'semantic-ui-react';
 import { Formik, Field, ErrorMessage } from 'formik';
-import { CREATE_TEAM } from '../gql/team';
+import { EDIT_TEAM, GET_TEAM_FOR_EDIT } from '../gql/team';
 
-const CreateTeam = () => {
+const EditTeam = ({ match: { params: { teamId } } }) => {
     const [errorMsg, setErrorMsg] = useState(null);
 
+    const teamIdInt = parseInt(teamId, 10);
+
     const history = useHistory();
-    const navigateLogin = () => {
-        history.push('/login');
-    };
 
     const navigateToTeam = (id) => {
         history.push(`/team/${id}`);
@@ -21,43 +21,60 @@ const CreateTeam = () => {
         history.push('/error');
     };
 
-    const [createTeam, { loading: submitting }] = useMutation(CREATE_TEAM, {
-        onCompleted: (data) => {
-            const { success, errors, team } = data.createTeam;
+    const [editTeam, { loading: submitting }] = useMutation(EDIT_TEAM, {
+        onCompleted: (d) => {
+            const { success, errors } = d.editTeam;
             if (success) {
                 console.log('success');
-                navigateToTeam(team.id);
+                navigateToTeam(teamIdInt);
             } else {
                 console.log(errorMsg);
-                setErrorMsg(errors.map(error => error.message));
+                setErrorMsg(errors.map(er => er.message));
             }
         },
-        onError: (error) => {
+        onError: (err) => {
             // TODO: ADD BETTER ERROR HANDLING FOR NETWORK ERRORS
             console.log('GraphQl failed');
-            console.log(error);
-            if (error.message === 'Not Authenticated') {
-                navigateLogin();
-                return;
-            }
+            console.log(err);
             navigateToError();
         },
     });
 
+    const { loading, error, data } = useQuery(GET_TEAM_FOR_EDIT, {
+        variables: {
+            teamId: teamIdInt,
+        },
+        fetchPolicy: 'network-only',
+    });
+
+    if (loading) {
+        return (
+            <Dimmer active>
+                <Loader />
+            </Dimmer>
+        );
+    }
+
+    if (error || !data) {
+        navigateToError();
+    }
+
+    const { getTeam: team } = data;
 
     return (
         <Container text>
-            <Header as="h2" color="orange">Create Team</Header>
+            <Header as="h2" color="orange">Edit Team</Header>
             <Formik
                 initialValues={{
-                    username: '',
-                    description: '',
+                    teamName: team.name,
+                    description: team.description,
                 }}
                 onSubmit={values => {
                     setErrorMsg(null);
                     console.log('sending');
-                    createTeam({
+                    editTeam({
                         variables: {
+                            teamId: teamIdInt,
                             teamName: values.teamName,
                             description: values.description,
                         },
@@ -73,7 +90,7 @@ const CreateTeam = () => {
                     return errors;
                 }}
             >
-                {({ setTouched, touched, isSubmitting, setFieldValue, errors, handleSubmit }) => (
+                {({ setTouched, touched, isSubmitting, setFieldValue, errors, handleSubmit, values }) => (
                     //values
                     <SemanticForm
                         onKeyDown={(e) => {
@@ -89,6 +106,7 @@ const CreateTeam = () => {
                                 onBlur={() => setTouched({ teamName: true })}
                                 onChange={(e) => setFieldValue('teamName', e.target.value)}
                                 placeholder="Team name here"
+                                value={values.teamName}
                                 fluid
                                 error={Boolean(errors.teamName && touched.teamName)}
                                 label="Team Name"
@@ -104,6 +122,7 @@ const CreateTeam = () => {
                                 onBlur={() => setTouched({ description: true })}
                                 onChange={(e) => setFieldValue('description', e.target.value)}
                                 placeholder="Team description here"
+                                value={values.description}
                                 rows={3}
                                 label="Description"
                             />
@@ -115,7 +134,7 @@ const CreateTeam = () => {
                             <Message error header="An Error has occured:" list={errorMsg} />
                         )}
 
-                        <Button type="submit" color="orange" disabled={isSubmitting} onClick={() => handleSubmit()}>Create Team</Button>
+                        <Button type="submit" color="orange" disabled={isSubmitting} onClick={() => handleSubmit()}>Confirm</Button>
                     </SemanticForm>
                 )}
             </Formik>
@@ -129,4 +148,13 @@ const CreateTeam = () => {
     );
 };
 
-export default memo(CreateTeam);
+EditTeam.propTypes = {
+    // eslint-disable-next-line react/forbid-prop-types
+    match: PropTypes.object,
+};
+
+EditTeam.defaultProps = {
+    match: {},
+};
+
+export default memo(EditTeam);

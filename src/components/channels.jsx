@@ -1,20 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { Icon } from 'semantic-ui-react';
+import { Icon, Header } from 'semantic-ui-react';
 import ChannelListItem from './listItems/channelListItem';
 import UserListItem from './listItems/userListItem';
 
 const ChannelWrapper = styled.div`
     grid-column: 2;
-    grid-row: 1 / 4;
+    grid-row: 2 / 5;
     background-color: #252526;
     color: #9e9e9e;
-`;
-
-const TeamNameHeader = styled.h1`
-    color: #ff9900;
-    font-size: 20px;
+    overflow-y: auto;
 `;
 
 const SideBarList = styled.ul`
@@ -33,9 +29,9 @@ const Channels = ({ teamName, username, userId, channels, isOwner, users, onAddC
     return (
         <ChannelWrapper>
             <PushLeft>
-                <TeamNameHeader>
+                <Header color="orange" as="h1" size="medium">
                     {teamName}
-                </TeamNameHeader>
+                </Header>
                 {username}
             </PushLeft>
             <div>

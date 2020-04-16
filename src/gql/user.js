@@ -9,6 +9,55 @@ export const ALL_USERS = gql`
   }
 `;
 
+export const GET_USER = gql`
+    query {
+        getUser {
+            id
+            username
+            teams {
+                id
+                name
+                admin
+                directMessageMembers {
+                    id
+                    username
+                }
+                channels {
+                    id
+                    name
+                }
+            }
+        }
+    }
+`;
+
+export const GET_SINGLE_USER = gql`
+    query($userId: Int!) {
+        getSingleUser(userId: $userId) {
+            id
+            username
+        }
+        getUser {
+            id
+            username
+            teams {
+                id
+                name
+                admin
+                directMessageMembers {
+                    id
+                    username
+                }
+                channels {
+                    id
+                    name
+                }
+            }
+        }
+    }
+`;
+
+
 export const GET_TEAM_USERS = gql`
   query($teamId: Int!) {
     getTeamUsers(teamId: $teamId) {
