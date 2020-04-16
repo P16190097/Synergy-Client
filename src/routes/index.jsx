@@ -46,6 +46,8 @@ const Router = () => {
   return (
     <BrowserRouter>
       <Switch>
+        {/* <PrivateRoute path="/edit/team/:teamId" exact component={CreateTeam} /> */}
+        {/* <PrivateRoute path="/edit/user/:userId" exact component={CreateTeam} /> */}
         <PrivateRoute path="/createteam" exact component={CreateTeam} />
         <PrivateRoute path="/team/:teamId?/:channelId?" exact component={ViewTeam} />
         <PrivateRoute path="/dm/:teamId/:userId" exact component={DirectMessage} />

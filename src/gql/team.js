@@ -5,6 +5,7 @@ export const GET_USERS_TEAMS = gql`
         getUserTeams {
             id
             name
+            admin
         }
     }
 `;

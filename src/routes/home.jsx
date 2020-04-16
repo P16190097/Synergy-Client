@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { Container, Header, Item, Divider, Button } from 'semantic-ui-react';
 import { useQuery } from '@apollo/react-hooks';
 import Navbar from '../components/navbar';
+import TeamDetailsListItem from '../components/listItems/teamDetailsListItem';
 import { GET_USERS_TEAMS } from '../gql/team';
 
 const Home = () => {
@@ -20,32 +21,21 @@ const Home = () => {
         <>
             <Navbar />
             <Container>
-                <Header color="orange" as="h2">Home</Header>
+                <Header color="orange" as="h1">Home</Header>
                 <Button color="orange" onClick={() => history.push('/createteam')}>Create New Team</Button>
-                <Divider />
-                <Item.Group>
-                    {teams ? teams.map(team => (
-                        <>
-                            <Item key={`team-${team.id}`}>
-                                <Item.Content>
-                                    <Item.Header className="message-name">
-                                        {team.name}
-                                    </Item.Header>
-                                    <Item.Meta className="message-time">
-                                        Meta Data Here
-                                    </Item.Meta>
-                                    <Item.Description className="message-text">
-                                        Team Description goes here
-                                    </Item.Description>
-                                </Item.Content>
-                                <Button color="orange" onClick={() => history.push(`/team/${team.id}`)}>Select</Button>
-                            </Item>
-                            <Divider />
-                        </>
-                    )) : (
-                            <Header color="orange" as="h2">You don`&apos;`t belong to any teams yet, create one to start chatting!</Header>
-                        )}
-                </Item.Group>
+                {teams.length ? (
+                    <>
+                        <Header color="orange" as="h2">Your teams</Header>
+                        <Divider />
+                        <Item.Group>
+                            {teams.map(team => (
+                                <TeamDetailsListItem team={team} key={`team-${team.id}`} />
+                            ))}
+                        </Item.Group>
+                    </>
+                ) : (
+                        <Header color="orange" as="h2">You don&apos;t belong to any teams yet, create one to start chatting!</Header>
+                    )}
             </Container>
         </>
     );
