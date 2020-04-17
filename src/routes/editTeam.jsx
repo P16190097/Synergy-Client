@@ -4,7 +4,7 @@ import { useMutation, useQuery } from '@apollo/react-hooks';
 import { useHistory } from 'react-router-dom';
 import { Container, Header, Input, TextArea, Button, Message, Form as SemanticForm, Dimmer, Loader } from 'semantic-ui-react';
 import { Formik, Field, ErrorMessage } from 'formik';
-import { EDIT_TEAM, GET_TEAM_FOR_EDIT } from '../gql/team';
+import { EDIT_TEAM, GET_TEAM_FOR_EDIT, DELETE_TEAM } from '../gql/team';
 
 const EditTeam = ({ match: { params: { teamId } } }) => {
     const [errorMsg, setErrorMsg] = useState(null);
@@ -21,7 +21,11 @@ const EditTeam = ({ match: { params: { teamId } } }) => {
         history.push('/error');
     };
 
-    const [editTeam, { loading: submitting }] = useMutation(EDIT_TEAM, {
+    const navigateToHome = () => {
+        history.push('/home');
+    };
+
+    const [editTeam] = useMutation(EDIT_TEAM, {
         onCompleted: (d) => {
             const { success, errors } = d.editTeam;
             if (success) {
@@ -40,11 +44,33 @@ const EditTeam = ({ match: { params: { teamId } } }) => {
         },
     });
 
+    const [deleteTeam] = useMutation(DELETE_TEAM, {
+        onCompleted: (d) => {
+            const { success, errors } = d.deleteTeam;
+            if (success) {
+                console.log('success');
+                navigateToHome();
+            } else {
+                console.log(errorMsg);
+                setErrorMsg(errors.map(er => er.message));
+            }
+        },
+        onError: (err) => {
+            // TODO: ADD BETTER ERROR HANDLING FOR NETWORK ERRORS
+            console.log('GraphQl failed');
+            console.log(err);
+            navigateToError();
+        },
+    });
+
     const { loading, error, data } = useQuery(GET_TEAM_FOR_EDIT, {
         variables: {
             teamId: teamIdInt,
         },
         fetchPolicy: 'network-only',
+        onError: () => {
+            navigateToError();
+        },
     });
 
     if (loading) {
@@ -134,16 +160,24 @@ const EditTeam = ({ match: { params: { teamId } } }) => {
                             <Message error header="An Error has occured:" list={errorMsg} />
                         )}
 
+                        {isSubmitting && (
+                            <span>sending data...</span>
+                        )}
+
                         <Button type="submit" color="orange" disabled={isSubmitting} onClick={() => handleSubmit()}>Confirm</Button>
+                        <Button
+                            negative
+                            onClick={() => deleteTeam({
+                                variables: {
+                                    teamId: teamIdInt,
+                                },
+                            })}
+                        >
+                            Delete Team
+                        </Button>
                     </SemanticForm>
                 )}
             </Formik>
-            {submitting && (
-                // <LoadingSpinner
-                //     loading={submitting}
-                // />
-                <span>sending data...</span>
-            )}
         </Container>
     );
 };
