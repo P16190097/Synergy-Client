@@ -48,6 +48,30 @@ export const EDIT_TEAM = gql`
     }
  `;
 
+export const DELETE_TEAM = gql`
+    mutation($teamId: Int!) {
+        deleteTeam(teamId: $teamId) {
+            success
+            errors {
+                path
+                message
+            }
+        }
+    }
+`;
+
+export const LEAVE_TEAM = gql`
+    mutation($teamId: Int!) {
+        leaveTeam(teamId: $teamId) {
+            success
+            errors {
+                path
+                message
+            }
+        }
+    }
+`;
+
 export const ADD_USER_TO_TEAM = gql`
 mutation($email: String!, $teamId: Int!) {
     addTeamMember(email: $email, teamId: $teamId) {

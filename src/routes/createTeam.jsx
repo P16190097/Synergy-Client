@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { Container, Header, Input, Button, Message, Form as SemanticForm, TextArea } from 'semantic-ui-react';
 import { Formik, Field, ErrorMessage } from 'formik';
 import { CREATE_TEAM } from '../gql/team';
+import Navbar from '../components/navbar';
 
 const CreateTeam = () => {
     const [errorMsg, setErrorMsg] = useState(null);
@@ -46,86 +47,89 @@ const CreateTeam = () => {
 
 
     return (
-        <Container text>
-            <Header as="h2" color="orange">Create Team</Header>
-            <Formik
-                initialValues={{
-                    username: '',
-                    description: '',
-                }}
-                onSubmit={values => {
-                    setErrorMsg(null);
-                    console.log('sending');
-                    createTeam({
-                        variables: {
-                            teamName: values.teamName,
-                            description: values.description,
-                        },
-                    });
-                }}
-                validate={values => {
-                    const errors = {};
+        <>
+            <Navbar />
+            <Container text>
+                <Header as="h2" color="orange">Create Team</Header>
+                <Formik
+                    initialValues={{
+                        username: '',
+                        description: '',
+                    }}
+                    onSubmit={values => {
+                        setErrorMsg(null);
+                        console.log('sending');
+                        createTeam({
+                            variables: {
+                                teamName: values.teamName,
+                                description: values.description,
+                            },
+                        });
+                    }}
+                    validate={values => {
+                        const errors = {};
 
-                    if (!values.teamName) {
-                        errors.teamName = 'Please enter a team name';
-                    }
+                        if (!values.teamName) {
+                            errors.teamName = 'Please enter a team name';
+                        }
 
-                    return errors;
-                }}
-            >
-                {({ setTouched, touched, isSubmitting, setFieldValue, errors, handleSubmit }) => (
-                    //values
-                    <SemanticForm
-                        onKeyDown={(e) => {
-                            if (e.key === 'Enter' && !isSubmitting) {
-                                handleSubmit();
-                            }
-                        }}
-                    >
-                        <SemanticForm.Field>
-                            <Field
-                                name="teamName"
-                                component={Input}
-                                onBlur={() => setTouched({ teamName: true })}
-                                onChange={(e) => setFieldValue('teamName', e.target.value)}
-                                placeholder="Team name here"
-                                fluid
-                                error={Boolean(errors.teamName && touched.teamName)}
-                                label="Team Name"
-                            />
-                            <ErrorMessage name="teamName">{(msg) => (<Message negative>{msg}</Message>)}</ErrorMessage>
-                        </SemanticForm.Field>
-                        <br />
+                        return errors;
+                    }}
+                >
+                    {({ setTouched, touched, isSubmitting, setFieldValue, errors, handleSubmit }) => (
+                        //values
+                        <SemanticForm
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter' && !isSubmitting) {
+                                    handleSubmit();
+                                }
+                            }}
+                        >
+                            <SemanticForm.Field>
+                                <Field
+                                    name="teamName"
+                                    component={Input}
+                                    onBlur={() => setTouched({ teamName: true })}
+                                    onChange={(e) => setFieldValue('teamName', e.target.value)}
+                                    placeholder="Team name here"
+                                    fluid
+                                    error={Boolean(errors.teamName && touched.teamName)}
+                                    label="Team Name"
+                                />
+                                <ErrorMessage name="teamName">{(msg) => (<Message negative>{msg}</Message>)}</ErrorMessage>
+                            </SemanticForm.Field>
+                            <br />
 
-                        <SemanticForm.Field>
-                            <Field
-                                name="description"
-                                component={TextArea}
-                                onBlur={() => setTouched({ description: true })}
-                                onChange={(e) => setFieldValue('description', e.target.value)}
-                                placeholder="Team description here"
-                                rows={3}
-                                label="Description"
-                            />
-                            <ErrorMessage name="description">{(msg) => (<Message negative>{msg}</Message>)}</ErrorMessage>
-                        </SemanticForm.Field>
-                        <br />
+                            <SemanticForm.Field>
+                                <Field
+                                    name="description"
+                                    component={TextArea}
+                                    onBlur={() => setTouched({ description: true })}
+                                    onChange={(e) => setFieldValue('description', e.target.value)}
+                                    placeholder="Team description here"
+                                    rows={3}
+                                    label="Description"
+                                />
+                                <ErrorMessage name="description">{(msg) => (<Message negative>{msg}</Message>)}</ErrorMessage>
+                            </SemanticForm.Field>
+                            <br />
 
-                        {errorMsg && (
-                            <Message error header="An Error has occured:" list={errorMsg} />
-                        )}
+                            {errorMsg && (
+                                <Message error header="An Error has occured:" list={errorMsg} />
+                            )}
 
-                        <Button type="submit" color="orange" disabled={isSubmitting} onClick={() => handleSubmit()}>Create Team</Button>
-                    </SemanticForm>
+                            <Button type="submit" color="orange" disabled={isSubmitting} onClick={() => handleSubmit()}>Create Team</Button>
+                        </SemanticForm>
+                    )}
+                </Formik>
+                {submitting && (
+                    // <LoadingSpinner
+                    //     loading={submitting}
+                    // />
+                    <span>sending data...</span>
                 )}
-            </Formik>
-            {submitting && (
-                // <LoadingSpinner
-                //     loading={submitting}
-                // />
-                <span>sending data...</span>
-            )}
-        </Container>
+            </Container>
+        </>
     );
 };
 

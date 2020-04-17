@@ -31,3 +31,7 @@ body {
   max-width: 15rem;
   margin: auto;
 }
+
+.logo {
+  margin-right: 20px;
+}
