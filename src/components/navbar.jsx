@@ -19,9 +19,16 @@ const Navbar = () => {
         history.push('/login');
     };
 
+    const navigateHome = () => {
+        history.push('/home');
+    };
+
     return (
         <NavbarContainer>
             <Image src="/img/logo.png" href="/home" size="small" inline className="logo" />
+            <Button color="orange" size="tiny" onClick={navigateHome}>
+                Home
+            </Button>
             <Button color="orange" size="tiny" floated="right" onClick={logout}>
                 Logout
             </Button>
