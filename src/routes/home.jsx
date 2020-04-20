@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
 import { Container, Header, Item, Divider, Button, Dimmer, Loader } from 'semantic-ui-react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import Navbar from '../components/navbar';
@@ -30,10 +30,18 @@ const Home = () => {
         },
     });
 
-    const { loading, data } = useQuery(GET_USERS_TEAMS, {
+    const { error, loading, data } = useQuery(GET_USERS_TEAMS, {
         fetchPolicy: 'network-only',
-        onError: () => navigateToError(),
     });
+
+    if (error) {
+        return (
+            <Redirect to={{
+                pathname: (error.message.includes('Not Authenticated') ? '/login' : '/error'),
+            }}
+            />
+        );
+    }
 
     if (loading || submitting) {
         return (
