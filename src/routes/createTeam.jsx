@@ -1,7 +1,7 @@
 import React, { memo, useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { useHistory } from 'react-router-dom';
-import { Container, Header, Input, Button, Message, Form as SemanticForm, TextArea } from 'semantic-ui-react';
+import { Container, Header, Input, Button, Message, Form as SemanticForm, TextArea, Loader } from 'semantic-ui-react';
 import { Formik, Field, ErrorMessage } from 'formik';
 import { CREATE_TEAM } from '../gql/team';
 import Navbar from '../components/navbar';
@@ -22,7 +22,7 @@ const CreateTeam = () => {
         history.push('/error');
     };
 
-    const [createTeam, { loading: submitting }] = useMutation(CREATE_TEAM, {
+    const [createTeam] = useMutation(CREATE_TEAM, {
         onCompleted: (data) => {
             const { success, errors, team } = data.createTeam;
             if (success) {
@@ -44,7 +44,6 @@ const CreateTeam = () => {
             navigateToError();
         },
     });
-
 
     return (
         <>
@@ -119,15 +118,12 @@ const CreateTeam = () => {
                             )}
 
                             <Button type="submit" color="orange" disabled={isSubmitting} onClick={() => handleSubmit()}>Create Team</Button>
+                            {isSubmitting && (
+                                <Loader />
+                            )}
                         </SemanticForm>
                     )}
                 </Formik>
-                {submitting && (
-                    // <LoadingSpinner
-                    //     loading={submitting}
-                    // />
-                    <span>sending data...</span>
-                )}
             </Container>
         </>
     );

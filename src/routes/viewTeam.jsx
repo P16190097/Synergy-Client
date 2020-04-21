@@ -39,8 +39,12 @@ const ViewTeam = ({ match: { params: { teamId, channelId } } }) => {
     }
 
     if (error) {
-        console.log(error);
-        return (<p>An error has occured</p>);
+        return (
+            <Redirect to={{
+                pathname: (error.message.includes('Not Authenticated') ? '/login' : '/error'),
+            }}
+            />
+        );
     }
 
     const { teams, username, id } = data.getUser;
