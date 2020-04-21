@@ -1,13 +1,13 @@
 import gql from 'graphql-tag';
 
-export const ALL_USERS = gql`
-  query {
-    allUsers {
-      id
-      email
-    }
-  }
-`;
+// export const ALL_USERS = gql`
+//   query {
+//     allUsers {
+//       id
+//       email
+//     }
+//   }
+// `;
 
 export const GET_USER = gql`
     query {

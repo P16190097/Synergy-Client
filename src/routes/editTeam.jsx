@@ -1,7 +1,7 @@
 import React, { memo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
 import { Container, Header, Input, TextArea, Button, Message, Form as SemanticForm, Dimmer, Loader } from 'semantic-ui-react';
 import { Formik, Field, ErrorMessage } from 'formik';
 import { EDIT_TEAM, GET_TEAM_FOR_EDIT, DELETE_TEAM } from '../gql/team';
@@ -82,8 +82,13 @@ const EditTeam = ({ match: { params: { teamId } } }) => {
         );
     }
 
-    if (error || !data) {
-        navigateToError();
+    if (error) {
+        return (
+            <Redirect to={{
+                pathname: (error.message.includes('Not Authenticated') ? '/login' : '/error'),
+            }}
+            />
+        );
     }
 
     const { getTeam: team } = data;
