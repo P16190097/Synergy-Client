@@ -20,9 +20,9 @@ const TeamDetailsListItem = ({ team, leaveTeam }) => {
                         {team.description}
                     </Item.Description>
                 </Item.Content>
-                {team.admin && <Button color="orange" onClick={() => history.push(`/edit/team/${team.id}`)}>Edit</Button>}
                 <Button color="orange" onClick={() => history.push(`/team/${team.id}`)}>View</Button>
-                {!team.admin && <Button negative onClick={leaveTeam(team.id)}>Leave Team</Button>}
+                {team.admin && <Button color="orange" onClick={() => history.push(`/edit/team/${team.id}`)}>Edit</Button>}
+                {!team.admin && <Button negative onClick={() => leaveTeam(team.id)}>Leave Team</Button>}
             </Item>
             <Divider />
         </>
