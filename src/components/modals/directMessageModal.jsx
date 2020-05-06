@@ -15,17 +15,15 @@ const AddChannelModal = ({ open, onClose, currentTeamId, userId }) => {
         history.push(`/teamview/dm/${currentTeamId}/${id}`);
     };
 
-    const { loading, error, data } = useQuery(GET_TEAM_USERS, {
+    const { loading, data } = useQuery(GET_TEAM_USERS, {
         variables: {
             teamId: currentTeamId,
         },
         fetchPolicy: 'network-only',
     });
 
-    if (loading || error) {
-        return (
-            <p>loading...</p>
-        );
+    if (loading) {
+        return null;
     }
 
     const { getTeamUsers: users } = data;

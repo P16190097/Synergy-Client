@@ -51,13 +51,15 @@ const SideBar = ({ allTeams, currentTeam, username, userId }) => {
                 onInvitePeopleClick={(e) => toggleUserModal(e)}
                 onDirectMessageClick={(e) => toggleDirectMessageModal(e)}
             />
-            <DirectMessageModal
-                userId={userId}
-                open={openDirectMessageModal}
-                onClose={(e) => toggleDirectMessageModal(e)}
-                key="sidebar-direct-message-modal"
-                currentTeamId={currentTeam.id}
-            />
+            {openDirectMessageModal && (
+                <DirectMessageModal
+                    userId={userId}
+                    open={openDirectMessageModal}
+                    onClose={(e) => toggleDirectMessageModal(e)}
+                    key="sidebar-direct-message-modal"
+                    currentTeamId={currentTeam.id}
+                />
+            )}
             <AddChannelModal
                 open={openChannelModal}
                 onClose={(e) => toggleChannelModal(e)}

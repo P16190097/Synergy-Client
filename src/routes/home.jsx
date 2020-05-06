@@ -67,8 +67,8 @@ const Home = () => {
                             {teams.map(team => (
                                 <TeamDetailsListItem
                                     team={team}
-                                    leaveTeam={async (id) => {
-                                        await leaveTeam({ variables: { teamId: parseInt(id, 10) } });
+                                    leaveTeam={(id) => {
+                                        leaveTeam({ variables: { teamId: parseInt(id, 10) } });
                                     }}
                                     key={`team-${team.id}`}
                                 />

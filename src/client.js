@@ -8,13 +8,13 @@ import { getMainDefinition } from 'apollo-utilities';
 
 const httpLink = new HttpLink({
     uri: 'http://localhost:8080/graphql',
-    // uri: 'http://192.168.0.4:8080/graphql',
+    // uri: 'http://192.168.0.7:8080/graphql',
     credentials: 'same-origin',
 });
 
 const wsLink = new WebSocketLink({
     uri: 'ws://localhost:8080/graphql',
-    // uri: 'ws://192.168.0.4:8080/graphql',
+    // uri: 'ws://192.168.0.7:8080/graphql',
     options: {
         reconnect: true,
         lazy: true,
