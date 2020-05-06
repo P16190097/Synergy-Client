@@ -12,7 +12,7 @@ const AddChannelModal = ({ open, onClose, currentTeamId, userId }) => {
     const history = useHistory();
     const navigateToUser = (id) => {
         onClose();
-        history.push(`/teamview/dm/${currentTeamId}/${id}`);
+        history.push(`/dm/${currentTeamId}/${id}`);
     };
 
     const { loading, data } = useQuery(GET_TEAM_USERS, {

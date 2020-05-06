@@ -70,9 +70,9 @@ const DirectMessage = ({ match: { params: { teamId, userId } } }) => {
     const teamIndex = currentTeamId ? teamList.findIndex(x => x.id === currentTeamId) : 0;
     const team = teamIndex >= 0 ? teamList[teamIndex] : teamList[0];
 
-    if (!team.directMessageMembers.length) {
-        return (<Redirect to={`/team/${team.id}`} />);
-    }
+    // if (!team.directMessageMembers.length) {
+    //     return (<Redirect to={`/team/${team.id}`} />);
+    // }
 
     return (
         <AppLayout>
