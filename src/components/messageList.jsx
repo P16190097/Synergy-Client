@@ -20,7 +20,7 @@ const MessageList = ({ channelId }) => {
             variables: { channelId },
             updateQuery: (prev, { subscriptionData }) => {
                 if (!subscriptionData) {
-                    return prev;
+                    return prev; // prev is cache
                 }
 
                 const newMessage = subscriptionData.data.newChannelMessage;

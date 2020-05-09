@@ -7,4 +7,8 @@ export default styled.div`
     grid-template-rows: auto auto 1fr auto;
     background-color: #1e1e1e;
     color: #ff9900;
+
+    @media (max-width: 768px) { 
+        grid-template-columns: 75px 150px 1fr;
+    }
 `;
