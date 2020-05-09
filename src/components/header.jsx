@@ -17,7 +17,7 @@ const HeaderWrapper = styled.div`
 const Header = ({ channelName }) => {
     return (
         <HeaderWrapper>
-            <SemanticHeader color="orange">#{channelName}</SemanticHeader>
+            <SemanticHeader color="orange">{channelName}</SemanticHeader>
         </HeaderWrapper>
     );
 };

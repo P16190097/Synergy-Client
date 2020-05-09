@@ -35,3 +35,7 @@ body {
 .logo {
   margin-right: 20px;
 }
+
+.s-button {
+  margin: 10px !important;
+}

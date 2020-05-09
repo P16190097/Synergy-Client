@@ -31,7 +31,6 @@ const authMiddlewareLink = new ApolloLink((operation, forward) => {
     const refreshToken = localStorage.getItem('refreshToken');
     operation.setContext({
         headers: {
-            // authorization: token ? `Bearer ${token}` : '',
             'x-token': token || '',
             'x-refresh-token': refreshToken || '',
         },

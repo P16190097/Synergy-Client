@@ -63,7 +63,7 @@ const DirectMessageList = ({ teamId, userId, fetching }) => {
                 ))}
             </Message.Group>
             <Header as="h2" icon textAlign="center" inverted>
-                <Icon name="users" circular className="orange" />
+                <Icon name="users" circular className="orange" inverted />
                 <Header.Content className="white">Start of chat history</Header.Content>
             </Header>
         </Messages>

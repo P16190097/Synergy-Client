@@ -167,6 +167,7 @@ const Register = () => {
                         )}
 
                         <Button type="submit" color="orange" disabled={isSubmitting}>Create Account</Button>
+                        <Button color="orange" disabled={isSubmitting} onClick={navigateLogin} className="s-button">Return to login</Button>
                     </Form>
                 )}
             </Formik>

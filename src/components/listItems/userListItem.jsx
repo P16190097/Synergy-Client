@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import SideBarListItem from './sideBarListItem';
-import Bubble from './Bubble';
+//import Bubble from './Bubble';
 
 const UserListItem = ({ id, username }, teamId) => (
     <Link to={`/dm/${teamId}/${id}`} key={`direct-message-${id}`}>
         <SideBarListItem key={`user-${id}`}>
-            <Bubble /> {username}
+            {username}
         </SideBarListItem>
     </Link>
 );

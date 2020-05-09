@@ -81,10 +81,8 @@ const ViewTeam = ({ match: { params: { teamId, channelId } } }) => {
             {channel ? (
                 <>
                     <Header
-                        channelName={channel.name}
-                    >
-                        Header
-                    </Header>
+                        channelName={`# ${channel.name}`}
+                    />
                     <MesssageList
                         channelId={channel.id}
                     />
