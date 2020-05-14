@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
-import { Form as SemanticForm, Modal, Input, Button } from 'semantic-ui-react';
+import { Form as SemanticForm, Modal, Input, Button, Loader } from 'semantic-ui-react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { ADD_USER_TO_TEAM } from '../../gql/team';
 //import normalizeErrors from '../../normalizeErrors';
@@ -99,7 +99,7 @@ const AddUserModal = ({ open, onClose, currentTeamId }) => {
                                     // <LoadingSpinner
                                     //     loading={submitting}
                                     // />
-                                    <span>sending data...</span>
+                                    <Loader />
                                 )}
                             </Form>
                         )}

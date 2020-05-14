@@ -39,3 +39,18 @@ body {
 .s-button {
   margin: 10px !important;
 }
+
+.hidden {
+  display: none !important;
+}
+.list-channnel-item:hover {
+  background: #333333;
+}
+
+.list-channnel-item i {
+  padding: 0px 5px;
+}
+
+.list-channnel-item:hover i {
+  display: inline-block !important;
+}

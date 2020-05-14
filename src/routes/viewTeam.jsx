@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { Redirect } from 'react-router-dom';
-import { Dimmer, Loader } from 'semantic-ui-react';
+import { Dimmer, Loader, Header as SemanticHeader } from 'semantic-ui-react';
 import { GET_USER } from '../gql/user';
 import { SEND_MESSAGE } from '../gql/messages';
 import AppLayout from '../components/styledComponents/appLayout';
@@ -94,7 +94,9 @@ const ViewTeam = ({ match: { params: { teamId, channelId } } }) => {
                     />
                 </>
             ) : (
-                    <h1>Please select a channel to view</h1>
+                    <SemanticHeader color="orange" as="h1" size="large" textAlign="center">
+                        Please select a channel to view
+                    </SemanticHeader>
                 )}
         </AppLayout>
     );

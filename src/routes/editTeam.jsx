@@ -2,12 +2,13 @@ import React, { memo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { useHistory, Redirect } from 'react-router-dom';
-import { Container, Header, Input, TextArea, Button, Message, Form as SemanticForm, Dimmer, Loader } from 'semantic-ui-react';
+import { Container, Header, Input, TextArea, Button, Message, Form as SemanticForm, Dimmer, Loader, Confirm } from 'semantic-ui-react';
 import { Formik, Field, ErrorMessage } from 'formik';
 import { EDIT_TEAM, GET_TEAM_FOR_EDIT, DELETE_TEAM } from '../gql/team';
 import Navbar from '../components/navbar';
 
 const EditTeam = ({ match: { params: { teamId } } }) => {
+    const [openDeleteModal, setOpenDeleteModal] = useState(false);
     const [errorMsg, setErrorMsg] = useState(null);
 
     const teamIdInt = parseInt(teamId, 10);
@@ -169,20 +170,25 @@ const EditTeam = ({ match: { params: { teamId } } }) => {
                             )}
 
                             {isSubmitting && (
-                                <span>sending data...</span>
+                                <Loader />
                             )}
 
                             <Button type="submit" color="orange" disabled={isSubmitting} onClick={() => handleSubmit()}>Confirm</Button>
                             <Button
                                 negative
-                                onClick={() => deleteTeam({
+                                onClick={() => setOpenDeleteModal(true)}
+                            >
+                                Delete Team
+                            </Button>
+                            <Confirm
+                                open={openDeleteModal}
+                                onCancel={() => setOpenDeleteModal(false)}
+                                onConfirm={() => deleteTeam({
                                     variables: {
                                         teamId: teamIdInt,
                                     },
                                 })}
-                            >
-                                Delete Team
-                            </Button>
+                            />
                         </SemanticForm>
                     )}
                 </Formik>

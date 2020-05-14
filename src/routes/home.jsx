@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory, Redirect } from 'react-router-dom';
-import { Container, Header, Item, Divider, Button, Dimmer, Loader } from 'semantic-ui-react';
+import { Container, Header, Item, Divider, Button, Dimmer, Loader, Confirm } from 'semantic-ui-react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import Navbar from '../components/navbar';
 import TeamDetailsListItem from '../components/listItems/teamDetailsListItem';
 import { GET_USERS_TEAMS, LEAVE_TEAM } from '../gql/team';
 
 const Home = () => {
+    const [deleteId, setDeleteId] = useState(null);
+
     const history = useHistory();
 
     const navigateToError = () => {
@@ -67,13 +69,16 @@ const Home = () => {
                             {teams.map(team => (
                                 <TeamDetailsListItem
                                     team={team}
-                                    leaveTeam={(id) => {
-                                        leaveTeam({ variables: { teamId: parseInt(id, 10) } });
-                                    }}
+                                    leaveTeam={(id) => setDeleteId(id)}
                                     key={`team-${team.id}`}
                                 />
                             ))}
                         </Item.Group>
+                        <Confirm
+                            open={Boolean(deleteId)}
+                            onCancel={() => setDeleteId(null)}
+                            onConfirm={() => leaveTeam({ variables: { teamId: parseInt(deleteId, 10) } })}
+                        />
                     </>
                 ) : (
                         <Header color="orange" as="h2">You don&apos;t belong to any teams yet, create one to start chatting!</Header>

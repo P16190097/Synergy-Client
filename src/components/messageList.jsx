@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import { useQuery } from '@apollo/react-hooks';
 import { Comment as Message, Header, Icon, Loader } from 'semantic-ui-react';
 import moment from 'moment';
@@ -41,7 +42,12 @@ const MessageList = ({ channelId }) => {
         );
     }
     if (error) {
-        return (<p>An error has occured</p>);
+        return (
+            <Redirect to={{
+                pathname: (error.message.includes('Not Authenticated') ? '/login' : '/error'),
+            }}
+            />
+        );
     }
 
     const { getMessages: messages } = data;
