@@ -15,3 +15,15 @@ export const CREATE_CHANNEL = gql`
         }
     }
  `;
+
+export const DELETE_CHANNEL = gql`
+    mutation($channelId: Int!, $teamId: Int!) {
+        deleteChannel(channelId: $channelId, teamId: $teamId) {
+            success
+            errors {
+                path
+                message
+            }
+        }
+    }
+`;
