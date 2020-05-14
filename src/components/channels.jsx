@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { Icon, Header } from 'semantic-ui-react';
+import { Icon, Header, Confirm } from 'semantic-ui-react';
+import { useMutation } from '@apollo/react-hooks';
+import { DELETE_CHANNEL } from '../gql/channels';
 import ChannelListItem from './listItems/channelListItem';
 import UserListItem from './listItems/userListItem';
 
@@ -26,6 +28,23 @@ const SideBarListHeader = styled.li`${paddingLeft};`;
 const PushLeft = styled.div`${paddingLeft};`;
 
 const Channels = ({ teamName, username, userId, channels, isOwner, users, onAddChannelClick, teamId, onInvitePeopleClick, onDirectMessageClick }) => {
+    const [deleteId, setDeleteId] = useState(null);
+
+    const [deleteChannel] = useMutation(DELETE_CHANNEL, {
+        onCompleted: (resp) => {
+            const { success, errors } = resp.deleteChannel;
+            // eslint-disable-next-line no-restricted-globals
+            location.reload();
+            if (!success) {
+                console.log(errors);
+            }
+        },
+        onError: (err) => {
+            console.log('GraphQl failed');
+            console.log(err);
+        },
+    });
+
     return (
         <ChannelWrapper>
             <PushLeft>
@@ -37,7 +56,7 @@ const Channels = ({ teamName, username, userId, channels, isOwner, users, onAddC
             <div>
                 <SideBarList>
                     <SideBarListHeader>Channels {isOwner && <Icon name="add circle" onClick={onAddChannelClick} />}</SideBarListHeader>
-                    {channels.map((c) => ChannelListItem(c, teamId))}
+                    {channels.map((c) => ChannelListItem(c, teamId, isOwner, setDeleteId))}
                 </SideBarList>
             </div>
             <div>
@@ -53,6 +72,16 @@ const Channels = ({ teamName, username, userId, channels, isOwner, users, onAddC
                             + Invite People
                         </a>
                     </SideBarList>
+                    <Confirm
+                        open={Boolean(deleteId)}
+                        onCancel={() => setDeleteId(null)}
+                        onConfirm={() => deleteChannel({
+                            variables: {
+                                channelId: deleteId,
+                                teamId,
+                            },
+                        })}
+                    />
                 </div>
             )}
 

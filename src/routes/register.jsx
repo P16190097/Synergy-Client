@@ -1,7 +1,7 @@
 import React, { memo, useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { useHistory } from 'react-router-dom';
-import { Container, Header, Input, Button, Message, Form as SemanticForm } from 'semantic-ui-react';
+import { Container, Header, Input, Button, Message, Form as SemanticForm, Loader } from 'semantic-ui-react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { REGISTER_USER } from '../gql/user';
 
@@ -175,7 +175,7 @@ const Register = () => {
                 // <LoadingSpinner
                 //     loading={submitting}
                 // />
-                <span>sending data...</span>
+                <Loader />
             )}
         </Container>
     );

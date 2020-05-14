@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
-import { Form as SemanticForm, Modal, Input, Button, Message } from 'semantic-ui-react';
+import { Form as SemanticForm, Modal, Input, Button, Message, Loader } from 'semantic-ui-react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { CREATE_CHANNEL } from '../../gql/channels';
 import { GET_USER } from '../../gql/user';
@@ -111,7 +111,7 @@ const AddChannelModal = ({ open, onClose, currentTeamId }) => {
                                     // <LoadingSpinner
                                     //     loading={submitting}
                                     // />
-                                    <span>sending data...</span>
+                                    <Loader />
                                 )}
 
                             </Form>
