@@ -73,6 +73,8 @@ const Register = () => {
 
                     if (!values.username) {
                         errors.username = 'Please enter Username';
+                    } else if (values.username.length > 20) {
+                        errors.teamName = 'Username must be less than 20 characters long';
                     }
 
                     if (!values.password) {

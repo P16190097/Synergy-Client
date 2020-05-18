@@ -25,7 +25,7 @@ const SendMessage = ({ header, onSubmit }) => {
                         return;
                     }
 
-                    await onSubmit(values.message.slice(0, 255))
+                    await onSubmit(values.message.slice(0, 65535))
                         .then(() => {
                             setSubmitting(false);
                             resetForm();
@@ -48,7 +48,7 @@ const SendMessage = ({ header, onSubmit }) => {
                             value={values.message}
                             error={errors.email && touched.email}
                             fluid
-                            placeholder={`# ${header}`}
+                            placeholder={`${header}`}
                             action={{
                                 type: 'submit',
                                 content: 'Send',

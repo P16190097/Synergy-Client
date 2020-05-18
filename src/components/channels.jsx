@@ -75,6 +75,8 @@ const Channels = ({ teamName, username, userId, channels, isOwner, users, onAddC
                     <Confirm
                         open={Boolean(deleteId)}
                         onCancel={() => setDeleteId(null)}
+                        header="Are you sure you want to delete this channel?"
+                        content="All messages in the channel will also be deleted."
                         onConfirm={() => deleteChannel({
                             variables: {
                                 channelId: deleteId,

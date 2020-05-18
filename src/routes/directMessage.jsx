@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useQuery, useMutation } from '@apollo/react-hooks';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import { GET_USER, GET_SINGLE_USER } from '../gql/user';
 import { SEND_DIRECT_MESSAGE } from '../gql/messages';
@@ -13,6 +13,12 @@ import SideBar from '../containers/sideBar';
 import DirectMessageList from '../components/directMessageList';
 
 const DirectMessage = ({ match: { params: { teamId, userId } } }) => {
+    const history = useHistory();
+
+    const navigateToError = () => {
+        history.push('/error');
+    };
+
     const { loading: userLoading, data: userData } = useQuery(GET_SINGLE_USER, {
         variables: {
             userId: parseInt(userId, 10),
@@ -34,10 +40,11 @@ const DirectMessage = ({ match: { params: { teamId, userId } } }) => {
         onError: (err) => {
             console.log('GraphQl failed');
             console.log(err);
+            navigateToError();
         },
     });
 
-    if (loading) {
+    if (loading || userLoading) {
         return (
             <Dimmer active>
                 <Loader />

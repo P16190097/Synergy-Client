@@ -23,6 +23,10 @@ body {
   color: rgba(255, 255, 255, 0.5) !important;
 }
 
+h2.header, h1.header {
+  padding: 10px 5px !important;
+}
+
 .segment {
   background-color: #1e1e1e !important;
 }
@@ -43,6 +47,7 @@ body {
 .hidden {
   display: none !important;
 }
+
 .list-channnel-item:hover {
   background: #333333;
 }
@@ -53,4 +58,8 @@ body {
 
 .list-channnel-item:hover i {
   display: inline-block !important;
+}
+
+.ui.comments {
+    max-width: unset !important;
 }

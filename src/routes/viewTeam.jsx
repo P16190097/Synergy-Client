@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useQuery, useMutation } from '@apollo/react-hooks';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import { Dimmer, Loader, Header as SemanticHeader } from 'semantic-ui-react';
 import { GET_USER } from '../gql/user';
 import { SEND_MESSAGE } from '../gql/messages';
@@ -13,6 +13,12 @@ import SideBar from '../containers/sideBar';
 import MesssageList from '../components/messageList';
 
 const ViewTeam = ({ match: { params: { teamId, channelId } } }) => {
+    const history = useHistory();
+
+    const navigateToError = () => {
+        history.push('/error');
+    };
+
     const { loading, error, data } = useQuery(GET_USER, {
         fetchPolicy: 'network-only',
     });
@@ -27,6 +33,7 @@ const ViewTeam = ({ match: { params: { teamId, channelId } } }) => {
         onError: (err) => {
             console.log('GraphQl failed');
             console.log(err);
+            navigateToError();
         },
     });
 

@@ -106,7 +106,6 @@ const EditTeam = ({ match: { params: { teamId } } }) => {
                     }}
                     onSubmit={values => {
                         setErrorMsg(null);
-                        console.log('sending');
                         editTeam({
                             variables: {
                                 teamId: teamIdInt,
@@ -120,6 +119,12 @@ const EditTeam = ({ match: { params: { teamId } } }) => {
 
                         if (!values.teamName) {
                             errors.teamName = 'Please enter a team name';
+                        } else if (values.teamName.length > 30) {
+                            errors.teamName = 'Team Name must be less than 30 characters';
+                        }
+
+                        if (values.description.length > 255) {
+                            errors.description = 'Description must be less than 255 characters long';
                         }
 
                         return errors;
@@ -183,6 +188,8 @@ const EditTeam = ({ match: { params: { teamId } } }) => {
                             <Confirm
                                 open={openDeleteModal}
                                 onCancel={() => setOpenDeleteModal(false)}
+                                header="Are you sure you want to delete this team?"
+                                content="This is permanent and connot be undone!"
                                 onConfirm={() => deleteTeam({
                                     variables: {
                                         teamId: teamIdInt,

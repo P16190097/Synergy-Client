@@ -64,6 +64,8 @@ const AddChannelModal = ({ open, onClose, currentTeamId }) => {
 
                             if (!values.channelName) {
                                 errors.channelName = 'Channel must have a name!';
+                            } else if (values.channelName.length > 20) {
+                                errors.teamName = 'Channel Name must be less than 20 characters';
                             }
 
                             return errors;
@@ -88,7 +90,7 @@ const AddChannelModal = ({ open, onClose, currentTeamId }) => {
                                         fluid
                                         placeholder="Channel name"
                                     />
-                                    <ErrorMessage name="channelName" component="span" />
+                                    <ErrorMessage name="channelName">{(msg) => (<Message negative>{msg}</Message>)}</ErrorMessage>
                                 </SemanticForm.Field>
                                 <SemanticForm.Field>
                                     <SemanticForm.Group widths="equal">
@@ -105,7 +107,7 @@ const AddChannelModal = ({ open, onClose, currentTeamId }) => {
                                     </SemanticForm.Group>
                                 </SemanticForm.Field>
                                 {errorMsg && (
-                                    <Message error list={errorMsg} />
+                                    <Message error header="An Error has occured:" list={errorMsg} />
                                 )}
                                 {submitting && (
                                     // <LoadingSpinner

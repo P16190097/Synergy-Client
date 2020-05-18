@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
-import { Form as SemanticForm, Modal, Input, Button, Loader } from 'semantic-ui-react';
+import { Form as SemanticForm, Modal, Input, Button, Loader, Message } from 'semantic-ui-react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { ADD_USER_TO_TEAM } from '../../gql/team';
 //import normalizeErrors from '../../normalizeErrors';
@@ -75,12 +75,12 @@ const AddUserModal = ({ open, onClose, currentTeamId }) => {
                                         fluid
                                         placeholder="User Email"
                                     />
-                                    <ErrorMessage name="email" component="span" />
+                                    <ErrorMessage name="email">{(msg) => (<Message negative>{msg}</Message>)}</ErrorMessage>
                                 </SemanticForm.Field>
-                                {errorMsg && errorMsg[0]}
-                                {/* {errorMsg && (
+                                {/* {errorMsg && errorMsg[0]} */}
+                                {errorMsg && (
                                     <Message error header="An Error has occured:" list={errorMsg} />
-                                )} */}
+                                )}
                                 <SemanticForm.Field>
                                     <SemanticForm.Group widths="equal">
                                         <Button
@@ -96,9 +96,6 @@ const AddUserModal = ({ open, onClose, currentTeamId }) => {
                                     </SemanticForm.Group>
                                 </SemanticForm.Field>
                                 {submitting && (
-                                    // <LoadingSpinner
-                                    //     loading={submitting}
-                                    // />
                                     <Loader />
                                 )}
                             </Form>

@@ -52,12 +52,11 @@ const CreateTeam = () => {
                 <Header as="h2" color="orange">Create Team</Header>
                 <Formik
                     initialValues={{
-                        username: '',
+                        teamName: '',
                         description: '',
                     }}
                     onSubmit={values => {
                         setErrorMsg(null);
-                        console.log('sending');
                         createTeam({
                             variables: {
                                 teamName: values.teamName,
@@ -70,6 +69,12 @@ const CreateTeam = () => {
 
                         if (!values.teamName) {
                             errors.teamName = 'Please enter a team name';
+                        } else if (values.teamName.length > 30) {
+                            errors.teamName = 'Team Name must be less than 30 characters';
+                        }
+
+                        if (values.description.length > 255) {
+                            errors.description = 'Description must be less than 255 characters long';
                         }
 
                         return errors;
@@ -105,7 +110,7 @@ const CreateTeam = () => {
                                     component={TextArea}
                                     onBlur={() => setTouched({ description: true })}
                                     onChange={(e) => setFieldValue('description', e.target.value)}
-                                    placeholder="Team description here"
+                                    placeholder="Team description here (optional)"
                                     rows={3}
                                     label="Description"
                                 />

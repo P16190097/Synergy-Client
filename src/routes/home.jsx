@@ -77,6 +77,8 @@ const Home = () => {
                         <Confirm
                             open={Boolean(deleteId)}
                             onCancel={() => setDeleteId(null)}
+                            header="Are you sure you want to leave this team?"
+                            content="You will have to be reinvited to rejoin the team."
                             onConfirm={() => leaveTeam({ variables: { teamId: parseInt(deleteId, 10) } })}
                         />
                     </>
